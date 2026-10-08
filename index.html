@@ -68,6 +68,7 @@
 }
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 :root{font-size:calc(16px * var(--fs))}
 body{background:var(--desk);color:var(--ink);font:400 1rem/1.6 var(--body);padding-inline:16px;padding-block:0 32px}
 h1,h2,h3,p,ul,figure{margin:0}
@@ -86,11 +87,35 @@ i{font-style:italic}
 
 .spread{position:relative;display:flex;flex-wrap:wrap;box-shadow:0 26px 60px rgba(0,0,0,.45)}
 .page{position:relative;min-width:0;background:var(--page);color:var(--ink)}
-.left{flex:1.25 1 520px;padding:28px 36px 36px;box-shadow:inset -26px 0 30px -26px rgba(0,0,0,.3)}
-.right{flex:1 1 440px;padding:28px 36px 36px 36px;box-shadow:inset 26px 0 30px -26px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:18px}
+.left{flex:1.5 1 560px;padding:28px 36px 36px;box-shadow:inset -26px 0 30px -26px rgba(0,0,0,.3)}
+.right{flex:1 1 400px;padding:28px 36px 28px 36px;box-shadow:inset 26px 0 30px -26px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px}
 .runhead{display:flex;justify-content:space-between;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--rule);font:400 .875rem var(--body);color:var(--muted)}
 .left .runhead{margin-bottom:16px}
 .ribbon{position:absolute;top:0;right:6px;width:26px;height:64px;background:var(--ribbon);clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%)}
+
+.barnote{align-self:center;font:400 .8125rem var(--ui);color:var(--desk-muted);max-width:260px;text-align:right}
+.barnote:empty{display:none}
+.barbtn.icon{min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center}
+.barbtn.icon .i-out{display:none}
+.barbtn.icon[aria-pressed="true"] .i-out{display:block}
+.barbtn.icon[aria-pressed="true"] .i-in{display:none}
+
+/* 식 → 그래프: 네모 빈칸 */
+.fslot{grid-template-columns:auto minmax(0,1fr) auto}
+.fx-in{display:flex;flex-wrap:wrap;align-items:center;gap:2px 4px}
+.eq{font:700 1.0625rem var(--display);margin-right:2px}
+.tx{font:italic 700 1.0625rem var(--display);white-space:nowrap}
+.tx sup{font-size:.6em;line-height:0;vertical-align:.7em}
+.cf{width:46px;height:38px;padding:0;border:1.5px solid var(--rule-strong);background:var(--paper);color:var(--ink);text-align:center;font:700 1.0625rem var(--body);border-radius:0;-moz-appearance:textfield;appearance:textfield}
+.cf::-webkit-inner-spin-button,.cf::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.k0 .cf{border-color:var(--c1)} .k1 .cf{border-color:var(--c2)} .k2 .cf{border-color:var(--c3)}
+.cf.bad{border-color:var(--bad)!important;background:var(--bad-soft)}
+.fslot .acts{flex-direction:column;gap:0;margin-left:0}
+.vals{list-style:none;padding:0;display:flex;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.vals li{display:flex;align-items:center;font-variant-numeric:tabular-nums;flex:1;justify-content:center;gap:6px;border-bottom:0;border-right:1px solid var(--rule);padding:6px 4px;font:700 1rem var(--body)}
+.vals li:last-child{border-right:0}
+.vals .ico{width:20px;height:20px}
+.vals .vnote{display:none}
 
 /* 파일 탭 (책 위쪽에 항상 고정) */
 .binder{display:flex;flex-direction:column}
@@ -117,8 +142,8 @@ figcaption b{font-family:var(--display);color:var(--ink)}
 .grid.major{stroke:var(--grid-major);stroke-width:1.4}
 .axis{fill:none;stroke:var(--axis);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .tickmark{stroke:var(--axis);stroke-width:1.5}
-.tick{font:700 14px var(--body);fill:var(--muted)}
-.axname{font:italic 700 24px var(--display);fill:var(--ink)}
+.tick{font:700 16px var(--body);fill:var(--muted)}
+.axname{font:italic 700 28px var(--display);fill:var(--ink)}
 .curve{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .st0{stroke:var(--c1)} .st1{stroke:var(--c2)} .st2{stroke:var(--c3)}
 .fl0{fill:var(--c1)} .fl1{fill:var(--c2)} .fl2{fill:var(--c3)}
@@ -129,106 +154,101 @@ figcaption b{font-family:var(--display);color:var(--ink)}
 .vline{stroke:var(--bad);stroke-width:2;fill:none}
 .ghost-mk{fill:var(--ink);opacity:.3}
 .hit{fill:none;pointer-events:all;cursor:grab;touch-action:none}
-.lbl{font:700 16px var(--body);fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:6px;stroke-linejoin:round}
+.lbl{font:700 19px var(--body);fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:7px;stroke-linejoin:round}
 .lbl.bad{fill:var(--bad)}
 .lbl.soft{opacity:.6}
-.tag{font:700 15px var(--ui);fill:var(--accent);paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
+.tag{font:700 18px var(--ui);fill:var(--accent);paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
 .qring{fill:var(--paper);stroke:var(--accent);stroke-width:1.75}
 .qring.bad{stroke:var(--bad)}
 .qgood{fill:var(--good);stroke:var(--paper);stroke-width:1}
 
 /* 오른쪽 쪽 */
-.panel{display:flex;flex-direction:column;gap:16px}
+.panel{display:flex;flex-direction:column;gap:12px}
 .panel[hidden]{display:none}
-h2{font:800 1.75rem/1.3 var(--display);color:var(--ink)}
-.lead{margin-top:8px;font:400 1rem/1.8 var(--body);color:var(--ink)}
-.cap{margin-bottom:6px;font:400 .9375rem var(--body);color:var(--muted)}
+h2{font:800 1.5rem/1.3 var(--display);color:var(--ink)}
+.lead{margin-top:4px;font:400 .9375rem/1.6 var(--body);color:var(--ink)}
+.cap{margin-bottom:3px;font:400 .8125rem var(--body);color:var(--muted)}
 .cap b{font-family:var(--display);color:var(--ink)}
 .ex-note{font:400 .875rem/1.5 var(--ui);color:var(--ink);background:var(--accent-soft);padding:6px 12px}
 .slots{list-style:none;padding:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
-.slot{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:2px 10px;align-items:center;padding:10px 6px;border-bottom:1px solid var(--rule)}
+.slot{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:0 8px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--rule)}
 .slot:last-child{border-bottom:0}
 .slot.active{background:var(--hl)}
 .slot.off .formula,.slot.off .ico{opacity:.4}
-.sel{display:flex;align-items:center;justify-content:center;width:30px;height:44px;cursor:pointer}
+.sel{display:flex;align-items:center;justify-content:center;width:28px;height:36px;cursor:pointer}
 .sel input{width:18px;height:18px;margin:0;accent-color:var(--ink)}
 .ico{display:block;flex:none}
 .ico text{font:800 14px var(--display);fill:var(--paper);text-anchor:middle}
 .slot-main{min-width:0}
-.formula{font:700 1.375rem/1.3 var(--display);overflow-wrap:anywhere}
+.formula{font:700 1.125rem/1.25 var(--display);overflow-wrap:anywhere}
 .k0 .formula{color:var(--c1)} .k1 .formula{color:var(--c2)} .k2 .formula{color:var(--c3)}
 .formula sup{font-size:.6em;line-height:0;vertical-align:.7em}
-.empty{font:400 1rem var(--ui);color:var(--muted)}
-.warn{font:700 1rem var(--ui);color:var(--bad)}
-.meta{font:400 .8125rem/1.5 var(--ui);color:var(--muted)}
-.slot-r2{grid-column:2 / -1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 10px}
-.chips{display:flex;flex-wrap:wrap;gap:4px 6px;min-width:0}
-.chip{display:inline-flex;align-items:center;padding-left:8px;border:1px solid var(--rule-strong);font:700 .875rem var(--body);font-variant-numeric:tabular-nums}
-.chip button{width:34px;height:34px;border:0;background:transparent;color:var(--muted);font:700 1.0625rem/1 var(--body);cursor:pointer}
+.empty{font:400 .875rem var(--ui);color:var(--muted)}
+.warn{font:700 .875rem var(--ui);color:var(--bad)}
+.meta{font:400 .75rem/1.4 var(--ui);color:var(--muted)}
+.meta sup{font-size:.6em;line-height:0;vertical-align:.7em}
+.slot-r2{grid-column:2 / -1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:3px 5px;min-width:0}
+.chip{display:inline-flex;align-items:center;padding-left:7px;border:1px solid var(--rule-strong);font:700 .8125rem var(--body);font-variant-numeric:tabular-nums}
+.chip button{width:28px;height:28px;border:0;background:transparent;color:var(--muted);font:700 1.0625rem/1 var(--body);cursor:pointer}
 .chip button:hover{color:var(--bad)}
 .acts{display:flex;gap:2px;margin-left:auto}
-.mini{min-height:40px;padding:0 10px;background:transparent;border:0;color:var(--muted);font:400 .875rem var(--ui);text-decoration:underline;cursor:pointer}
+.mini{white-space:nowrap;min-height:32px;padding:0 8px;background:transparent;border:0;color:var(--muted);font:400 .75rem var(--ui);text-decoration:underline;cursor:pointer}
 .mini:hover{color:var(--ink)}
-.fx-in{display:flex;align-items:center;gap:8px}
-.fx-in label{font:italic 700 1.25rem var(--display)}
-.fx-in input{flex:1;min-width:0;min-height:44px;border:0;border-bottom:1.5px solid var(--ink);background:transparent;color:var(--ink);font:700 1.25rem var(--display);padding:0 4px}
-.fx-in input.bad{border-bottom-color:var(--bad)}
-.nbox{border:1.5px dashed var(--rule-strong);padding:12px 16px;display:flex;flex-direction:column;gap:6px}
-.nbox h3{font:800 1.0625rem var(--display)}
-.nrow{display:flex;justify-content:space-between;gap:12px;font:400 1rem var(--body);font-variant-numeric:tabular-nums}
+.nbox{border:1.5px dashed var(--rule-strong);padding:6px 12px;display:flex;flex-direction:column;gap:1px}
+.nbox h3{font:800 .9375rem var(--display)}
+.nrow{display:flex;justify-content:space-between;gap:12px;font:400 .875rem var(--body);font-variant-numeric:tabular-nums}
 .nrow span:last-child{text-align:right}
-.nnone{font:400 .9375rem var(--ui);color:var(--muted)}
+.nnone{font:400 .8125rem var(--ui);color:var(--muted)}
 .coord{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 12px}
 .coord .ttl{align-self:center;font:800 1.125rem var(--display)}
 .coord label{font:italic 700 1.125rem var(--display)}
-.coord input{width:64px;min-height:44px;border:0;border-bottom:1.5px solid var(--ink);background:transparent;color:var(--ink);text-align:center;font:700 1.25rem var(--body);border-radius:0}
-.btn{min-height:44px;padding:0 20px;background:var(--ink);color:var(--page);border:0;font:700 1rem var(--display);cursor:pointer}
+.coord input{width:56px;min-height:40px;border:0;border-bottom:1.5px solid var(--ink);background:transparent;color:var(--ink);text-align:center;font:700 1.25rem var(--body);border-radius:0}
+.btn{min-height:40px;padding:0 18px;background:var(--ink);color:var(--page);border:0;font:700 1rem var(--display);cursor:pointer}
 .btn:hover{opacity:.88}
-.ghost{min-height:44px;padding:0 14px;background:transparent;border:1.5px solid var(--rule-strong);color:var(--ink);font:400 .9375rem var(--ui);cursor:pointer}
+.ghost{min-height:38px;padding:0 12px;background:transparent;border:1.5px solid var(--rule-strong);color:var(--ink);font:400 .9375rem var(--ui);cursor:pointer}
 .ghost:hover{border-color:var(--ink)}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .row3{font:800 1rem var(--display)}
 .link{background:none;border:0;color:var(--muted);font:400 .875rem var(--ui);text-decoration:underline;cursor:pointer;min-height:44px;padding:0 6px}
 .link:hover{color:var(--ink)}
-.msg{min-height:1.4em;font:400 .9375rem/1.5 var(--ui);color:var(--accent)}
+.msg{font:400 .9375rem/1.5 var(--ui);color:var(--accent)}
+.msg:empty{display:none}
 .msg.err{color:var(--bad)}
 input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
-.vals{list-style:none;padding:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
-.vals li{display:flex;align-items:center;gap:10px;padding:6px;border-bottom:1px solid var(--rule);font:700 1.125rem var(--body);font-variant-numeric:tabular-nums}
-.vals li:last-child{border-bottom:0}
-.vals .vnote{font:400 .8125rem var(--ui);color:var(--muted)}
 .xnow{font:700 1.25rem var(--display)}
 
 /* 퀴즈 */
 .lvs{display:flex;gap:6px}
 .ptm{fill:var(--ink);stroke:var(--paper);stroke-width:2}
 .ptq{fill:var(--accent);stroke:var(--paper);stroke-width:2}
-.big{font:800 1.75rem var(--display);color:var(--c1);white-space:nowrap}
-.read{display:flex;flex-direction:column;gap:2px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:var(--hl);padding:10px 14px}
-.read b{font:800 1.75rem var(--display);color:var(--c1)}
-.read span{font:400 .9375rem/1.6 var(--body)}
+.big{font:800 1.5rem var(--display);color:var(--c1);white-space:nowrap}
+.read{display:flex;flex-direction:column;gap:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:var(--hl);padding:6px 12px}
+.read b{font:800 1.5rem var(--display);color:var(--c1)}
+.read span{font:400 .875rem/1.5 var(--body)}
 .lv,.sw{min-height:40px;min-width:56px;padding:0 12px;background:transparent;border:1px solid var(--rule-strong);color:var(--ink);font:700 .9375rem var(--body);cursor:pointer}
 .lv[aria-pressed="true"],.sw[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
-.q-prompt{font:800 1.375rem/1.5 var(--display)}
-.q-formula{font:700 1.875rem/1.35 var(--display);background:var(--hl);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:10px 14px;color:var(--c1);overflow-wrap:anywhere}
+.q-prompt{font:800 1.125rem/1.45 var(--display)}
+.q-formula{font:700 1.5rem/1.3 var(--display);background:var(--hl);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:6px 12px;color:var(--c1);overflow-wrap:anywhere}
 .q-formula sup,.opt sup,.fb sup{font-size:.6em;line-height:0;vertical-align:.7em}
-.q-tip{font:400 .875rem/1.6 var(--ui);color:var(--muted)}
+.q-tip{font:400 .8125rem/1.5 var(--ui);color:var(--muted)}
+.q-tip:empty{display:none}
 .q-answer{display:flex;align-items:flex-end;gap:10px}
 .q-answer label{align-self:center;font:italic 700 1.125rem var(--display)}
 .q-answer input{width:110px;min-height:44px;border:0;border-bottom:2px solid var(--ink);background:transparent;color:var(--ink);text-align:center;font:700 1.5rem var(--body);border-radius:0}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.opt{min-height:56px;padding:10px 8px;background:var(--paper);color:var(--ink);border:1.5px solid var(--rule-strong);font:700 1.25rem/1.4 var(--display);cursor:pointer;min-width:0;overflow-wrap:anywhere}
+.opt{min-height:46px;padding:6px 8px;background:var(--paper);color:var(--ink);border:1.5px solid var(--rule-strong);font:700 1.25rem/1.4 var(--display);cursor:pointer;min-width:0;overflow-wrap:anywhere}
 .opt:hover:not(:disabled){border-color:var(--ink)}
 .opt:disabled{cursor:default;color:var(--ink)}
 .opt.good{border-color:var(--good);background:var(--good-soft);border-width:2.5px}
 .opt.bad{border-color:var(--bad);background:var(--bad-soft);border-width:2.5px}
-.fb{padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.fb{padding:8px 12px;display:flex;flex-direction:column;gap:2px}
 .fb.good{background:var(--good-soft);border:1px solid var(--good)}
 .fb.bad{background:var(--bad-soft);border:1px solid var(--bad)}
-.fb-h{font:800 1.25rem var(--display)}
+.fb-h{font:800 1.0625rem var(--display)}
 .fb.good .fb-h{color:var(--good)} .fb.bad .fb-h{color:var(--bad)}
 .fb-a{font:700 1rem var(--body)}
-.fb-c{font:400 .875rem/1.6 var(--ui);color:var(--muted);font-variant-numeric:tabular-nums}
+.fb-c{font:400 .8125rem/1.5 var(--ui);color:var(--muted);font-variant-numeric:tabular-nums}
 
 .foot{display:flex;align-items:center;gap:14px;font:400 .875rem var(--ui);color:var(--desk-muted)}
 .track{flex:1;height:4px;background:var(--desk-line)}
@@ -238,8 +258,14 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
   .left,.right{box-shadow:none}
 }
 @media (max-width:900px){
-  .left{padding:22px 20px 28px}
-  .right{padding:22px 20px 28px}
+  .runhead{display:none}
+  .desk{gap:10px}
+  .bar{padding-top:10px}
+  .brand p{display:none}
+  .left{padding:14px 16px 12px}
+  .right{padding:14px 16px 16px;gap:10px}
+  .frame,.fig-tools{width:clamp(300px,58vh,100%);margin-inline:auto}
+  .fig-tools{margin-top:6px}
   .ribbon{display:none}
   .tabs{padding-left:0}
   .tab{flex:1 1 0;padding:0 10px;letter-spacing:0;white-space:normal;line-height:1.25;font-size:.8125rem;clip-path:polygon(0 100%,8px 0,calc(100% - 8px) 0,100% 100%)}
@@ -247,10 +273,13 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
   .spread[data-mode="quiz"] .right{order:-1}
 }
 @media (max-width:560px){
-  .tick{font-size:21px}
-  .lbl{font-size:23px}
-  .tag{font-size:21px}
-  .axname{font-size:30px}
+  .fslot{grid-template-columns:auto minmax(0,1fr)}
+  .fslot .acts{grid-column:2;flex-direction:row;justify-content:flex-end}
+  .cf{width:42px;height:36px}
+  .tick{font-size:26px}
+  .lbl{font-size:28px}
+  .tag{font-size:26px}
+  .axname{font-size:36px}
   .brand h1{font-size:1.375rem}
   .brand p{display:none}
   h2{font-size:1.5rem}
@@ -266,8 +295,13 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
       <p>점으로 만들고, 식으로 그리고, 퀴즈로 확인해요</p>
     </div>
     <div class="bar-act">
+      <span class="barnote" id="barNote" aria-live="polite"></span>
       <button type="button" class="barbtn" id="fsBtn" aria-pressed="false" aria-label="글자 크게 보기">가 가</button>
       <button type="button" class="barbtn" id="themeBtn" aria-pressed="false">야간 모드</button>
+      <button type="button" class="barbtn icon" id="fullBtn" aria-pressed="false" aria-label="전체 화면 켜기" title="전체 화면">
+        <svg class="i-in" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M2 7V2h5M11 2h5v5M16 11v5h-5M7 16H2v-5"/></svg>
+        <svg class="i-out" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M7 2v5H2M16 7h-5V2M11 16v-5h5M2 11h5v5"/></svg>
+      </button>
     </div>
   </header>
 
@@ -284,8 +318,8 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
       <div class="runhead"><span id="lhLeft">제1장 · 점 찍기</span><i>f(x) 함수 찍기</i></div>
       <figure>
         <div class="frame">
-          <svg id="plot" viewBox="0 0 640 640" role="img" aria-label="좌표평면 그래프판. 가로는 x, 세로는 y예요.">
-            <defs><clipPath id="clipPlot"><rect x="5" y="5" width="630" height="630"/></clipPath></defs>
+          <svg id="plot" viewBox="0 0 800 600" role="img" aria-label="좌표평면 그래프판. 가로는 x, 세로는 y예요.">
+            <defs><clipPath id="clipPlot"><rect x="5" y="5" width="790" height="590"/></clipPath></defs>
             <g id="gGrid"></g>
             <g id="gAxes"></g>
             <g id="gCurve" clip-path="url(#clipPlot)"></g>
@@ -304,7 +338,6 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
           </div>
           <span class="cursor" id="cursor">커서 —</span>
         </div>
-        <figcaption id="caption"></figcaption>
       </figure>
     </section>
 
@@ -324,10 +357,9 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
         </div>
 
         <div class="panel" id="ptFree">
-          <p class="lead">판을 눌러 점을 찍어요. 점이 있는 곳을 다시 누르면 지워져요. 점의 자리는 (가로, 세로) 순서로 써요.</p>
           <div class="read" id="ptRead"></div>
           <form class="coord" id="ptForm" autocomplete="off">
-            <span class="ttl">점 더하기</span>
+            <span class="ttl">점 추가</span>
             <label for="ptX">x</label>
             <input id="ptX" type="number" step="1" placeholder="3">
             <label for="ptY">y</label>
@@ -366,60 +398,43 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
       <div class="panel" data-panel="explore" hidden>
         <div>
           <h2>점으로 함수식 만들기</h2>
-          <p class="lead">함수를 고르고 판을 눌러 점을 찍어요. 점 2개는 직선, 3개는 포물선, 4개는 3차 곡선이 돼요. 점을 끌면 식이 바로 바뀌고, 점을 한 번 누르면 지워져요.</p>
+          <p class="lead">함수를 고르고 판을 눌러 점을 찍어요. 점은 4개(3차 곡선)까지 찍을 수 있어요.</p>
         </div>
-        <p class="ex-note" id="exNote">지금 찍혀 있는 점들은 예시예요. 판을 눌러 내 점을 찍어 보세요.</p>
         <div>
           <div class="cap"><b>표 1.</b> 지금 판 위에 있는 함수</div>
           <ul class="slots" id="exSlots"></ul>
         </div>
         <div class="nbox" id="exInter"></div>
         <form class="coord" id="coordForm" autocomplete="off">
-          <span class="ttl">점 더하기</span>
+          <span class="ttl">점 추가</span>
           <label for="inX">x</label>
           <input id="inX" type="number" step="1" placeholder="3">
           <label for="inY">y</label>
           <input id="inY" type="number" step="1" placeholder="4">
           <button type="submit" class="btn" id="coordBtn">1번에 찍기</button>
         </form>
-        <div>
-          <div class="row3">고른 함수에 예시 불러오기</div>
-          <div class="row" style="margin-top:6px">
-            <button type="button" class="ghost" data-ex="line">직선</button>
-            <button type="button" class="ghost" data-ex="parab">포물선</button>
-            <button type="button" class="ghost" data-ex="cubic">3차 곡선</button>
-            <button type="button" class="link" id="clearAll">모두 지우기</button>
-          </div>
+        <div class="row">
+          <span class="row3">예시</span>
+          <button type="button" class="ghost" data-ex="line">직선</button>
+          <button type="button" class="ghost" data-ex="parab">포물선</button>
+          <button type="button" class="ghost" data-ex="cubic">3차 곡선</button>
+          <button type="button" class="link" id="clearAll" style="margin-left:auto">모두 지우기</button>
         </div>
         <p class="msg" id="exMsg" aria-live="polite"></p>
       </div>
 
-      <!-- 식 그리기 -->
+      <!-- 식 → 그래프 -->
       <div class="panel" data-panel="formula" hidden>
         <div>
           <h2>식으로 그래프 그리기</h2>
-          <p class="lead">식을 쓰면 그래프가 그려져요. 세 개까지 겹쳐 놓고 어디에서 만나는지 살펴보세요. 곱하기는 2x처럼 붙여 써도 돼요.</p>
+          <p class="lead">빈칸에 숫자를 쓰면 그래프가 그려져요. 쓰지 않은 칸은 0이에요.</p>
         </div>
-        <div>
-          <div class="cap"><b>표 1.</b> 지금 판 위에 있는 식</div>
-          <ul class="slots" id="fmSlots"></ul>
-        </div>
-        <div class="row">
-          <span class="row3">쓰기 도우미</span>
-          <button type="button" class="ghost" data-ins="x²">x²</button>
-          <button type="button" class="ghost" data-ins="x³">x³</button>
-        </div>
-        <div class="nbox" id="fmInter"></div>
+        <ul class="slots" id="fmSlots"></ul>
         <div>
           <div class="row3">x에 숫자 넣어 보기 <span class="xnow" id="xNow"></span></div>
           <input type="range" id="fmX" min="-20" max="20" step="1" value="3" aria-label="x 값 고르기">
           <ul class="vals" id="fmVals"></ul>
         </div>
-        <div>
-          <div class="row3">이런 식도 그려 보세요 (고른 함수에 들어가요)</div>
-          <div class="row" id="presets" style="margin-top:6px"></div>
-        </div>
-        <p class="msg" id="fmMsg" aria-live="polite"></p>
       </div>
 
       <!-- 퀴즈 -->
@@ -442,11 +457,11 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
         </form>
         <div class="opts" id="qOpts" hidden></div>
         <p class="msg" id="qMsg" aria-live="polite"></p>
-        <div class="row"><button type="button" class="ghost" id="hintBtn">그래프로 힌트 보기</button></div>
         <div class="fb" id="qFb" aria-live="polite" hidden></div>
         <div class="row">
+          <button type="button" class="ghost" id="hintBtn">그래프로 힌트 보기</button>
           <button type="button" class="btn" id="nextBtn" hidden>다음 문제</button>
-          <button type="button" class="link" id="resetScore">점수 지우기</button>
+          <button type="button" class="link" id="resetScore" style="margin-left:auto">점수 지우기</button>
         </div>
       </div>
     </section>
@@ -679,34 +694,34 @@ const svg=$('plot'), gGrid=$('gGrid'), gAxes=$('gAxes'), gCurve=$('gCurve'),
       gGuide=$('gGuide'), gPts=$('gPts'), gGhost=$('gGhost'), gHit=$('gHit');
 
 /* ---------- 그래프판 ---------- */
-const C=320;
-let R=20, U=15;
-const px=x=>C+x*U, py=y=>C-y*U;
+const CX=400, CY=300;
+let R=20, UX=19, UY=14;
+const px=x=>CX+x*UX, py=y=>CY-y*UY;
 const f1=v=>v.toFixed(1);
 
 function drawStatic(){
   let minor='', major='';
   for(let n=-R;n<=R;n++){
     if(n===0) continue;
-    const seg='M'+f1(px(n))+' 5V635M5 '+f1(py(n))+'H635';
+    const seg='M'+f1(px(n))+' 5V595M5 '+f1(py(n))+'H795';
     if(n%5===0) major+=seg; else minor+=seg;
   }
   gGrid.innerHTML='<path class="grid" d="'+minor+'"/><path class="grid major" d="'+major+'"/>';
-  let a='<path class="axis" d="M5 '+C+'H626M'+C+' 635V10M610 310L626 '+C+'L610 330M310 26L'+C+' 10L330 26"/>';
+  let a='<path class="axis" d="M5 '+CY+'H786M'+CX+' 595V10M770 290L786 '+CY+'L770 310M390 26L'+CX+' 10L410 26"/>';
   const step=R<=10?1:5;
   for(let n=step;n<=R;n+=step){
     const odd=(R<=10&&n%2===1)?' t-odd':'';
     [-1,1].forEach(sg=>{
       const v=n*sg;
-      a+='<line class="tickmark" x1="'+f1(px(v))+'" y1="'+(C-5)+'" x2="'+f1(px(v))+'" y2="'+(C+5)+'"/>';
-      a+='<text class="tick'+odd+'" x="'+f1(px(v))+'" y="'+(C+22)+'" text-anchor="middle">'+fmt(v)+'</text>';
-      a+='<line class="tickmark" x1="'+(C-5)+'" y1="'+f1(py(v))+'" x2="'+(C+5)+'" y2="'+f1(py(v))+'"/>';
-      a+='<text class="tick'+odd+'" x="'+(C-10)+'" y="'+f1(py(v)+5)+'" text-anchor="end">'+fmt(v)+'</text>';
+      a+='<line class="tickmark" x1="'+f1(px(v))+'" y1="'+(CY-5)+'" x2="'+f1(px(v))+'" y2="'+(CY+5)+'"/>';
+      a+='<text class="tick'+odd+'" x="'+f1(px(v))+'" y="'+(CY+22)+'" text-anchor="middle">'+fmt(v)+'</text>';
+      a+='<line class="tickmark" x1="'+(CX-5)+'" y1="'+f1(py(v))+'" x2="'+(CX+5)+'" y2="'+f1(py(v))+'"/>';
+      a+='<text class="tick'+odd+'" x="'+(CX-10)+'" y="'+f1(py(v)+5)+'" text-anchor="end">'+fmt(v)+'</text>';
     });
   }
-  a+='<text class="tick" x="'+(C-10)+'" y="'+(C+22)+'" text-anchor="end">0</text>';
-  a+='<text class="axname" x="628" y="'+(C-14)+'" text-anchor="end">x</text>';
-  a+='<text class="axname" x="'+(C+16)+'" y="30">y</text>';
+  a+='<text class="tick" x="'+(CX-10)+'" y="'+(CY+22)+'" text-anchor="end">0</text>';
+  a+='<text class="axname" x="788" y="'+(CY-14)+'" text-anchor="end">x</text>';
+  a+='<text class="axname" x="'+(CX+16)+'" y="30">y</text>';
   gAxes.innerHTML=a;
 }
 
@@ -741,7 +756,7 @@ function placeLabels(items){
     for(let k=0;k<cands.length;k++){
       const dx=cands[k][0], dy=cands[k][1], an=cands[k][2];
       const x0=an==='start'?cx+dx:cx+dx-w, y0=cy+dy-h+4;
-      if(x0<6||x0+w>634||y0<6||y0+h>634) continue;
+      if(x0<6||x0+w>794||y0<6||y0+h>594) continue;
       if(placed.some(p=>x0<p.x1&&x0+w>p.x0&&y0<p.y1&&y0+h>p.y0)) continue;
       placed.push({x0:x0,x1:x0+w,y0:y0,y1:y0+h});
       out+='<text class="lbl'+(it.cls?' '+it.cls:'')+'" x="'+f1(cx+dx)+'" y="'+f1(cy+dy)+'" text-anchor="'+an+'">'+it.text+'</text>';
@@ -779,7 +794,6 @@ function setMode(m){
   document.querySelectorAll('[data-panel]').forEach(s=>{s.hidden=s.dataset.panel!==m;});
   $('lhLeft').textContent=MODES[m].ch;
   $('rhLeft').textContent=MODES[m].rh;
-  $('caption').innerHTML=MODES[m].cap;
   gGhost.innerHTML='';
   if(m==='formula') syncFmSlider();
   render();
@@ -851,7 +865,7 @@ function walkText(x,y){
   return parts.length?'가운데에서 '+parts.join(', ')+' 가면 돼요':'가운데(원점)예요';
 }
 function guideTo(x,y,cls){
-  return '<path class="guide'+(cls?' '+cls:'')+'" d="M'+f1(px(x))+' '+f1(py(y))+'V'+C+'M'+f1(px(x))+' '+f1(py(y))+'H'+C+'"/>';
+  return '<path class="guide'+(cls?' '+cls:'')+'" d="M'+f1(px(x))+' '+f1(py(y))+'V'+CY+'M'+f1(px(x))+' '+f1(py(y))+'H'+CX+'"/>';
 }
 function ptNewQ(){
   const lo=pt.level===1?1:-10, hi=10;
@@ -1015,7 +1029,7 @@ function syncHits(){
     s.pts.forEach((p,k)=>items.push({f:i,k:k,x:p.x,y:p.y}));
   }
   if(gHit.childNodes.length!==items.length){
-    gHit.innerHTML=items.map(it=>'<circle class="hit" r="15" data-f="'+it.f+'" data-k="'+it.k+'" cx="'+f1(px(it.x))+'" cy="'+f1(py(it.y))+'"/>').join('');
+    gHit.innerHTML=items.map(it=>'<circle class="hit" r="18" data-f="'+it.f+'" data-k="'+it.k+'" cx="'+f1(px(it.x))+'" cy="'+f1(py(it.y))+'"/>').join('');
   } else {
     items.forEach((it,n)=>{
       const c=gHit.childNodes[n];
@@ -1030,7 +1044,7 @@ function renderExplore(){
   let curves='', guide='', marks='';
   fs.forEach((f,i)=>{if(f) curves+='<path class="curve st'+i+'" d="'+curvePath(f)+'"/>';});
   ex.fns.forEach(s=>{
-    if(s.visible&&s.a.kind==='vertical') s.a.dups.forEach(x=>{guide+='<line class="vline" x1="'+f1(px(x))+'" y1="5" x2="'+f1(px(x))+'" y2="635"/>';});
+    if(s.visible&&s.a.kind==='vertical') s.a.dups.forEach(x=>{guide+='<line class="vline" x1="'+f1(px(x))+'" y1="5" x2="'+f1(px(x))+'" y2="595"/>';});
   });
   const inter=computeInter(fs);
   let rings='';
@@ -1062,7 +1076,6 @@ function renderExplore(){
   $('exSlots').innerHTML=[0,1,2].map(exSlotHTML).join('');
   if(hadFocus){const r=document.querySelector('#exSlots input:checked'); if(r) r.focus({preventScroll:true});}
   interBox($('exInter'),inter.list,inter.count);
-  $('exNote').hidden=!ex.example;
   $('coordBtn').textContent=(ex.active+1)+'번에 찍기';
 }
 function setActive(i){ if(ex.active!==i){ex.active=i;} renderExplore(); updateFoot(); }
@@ -1074,38 +1087,49 @@ function addPoint(x,y){
 }
 
 /* ---------- 모드 3: 식 → 그래프 ---------- */
-const fm={fns:[{src:'x + 1'},{src:'x² - 1'},{src:'-x + 1'}],active:0,x:3};
+const fm={fns:[{},{},{}],active:0,x:3};
 fm.fns.forEach(s=>{s.f=null;s.err='';s.visible=true;});
-const PRESETS=[
-  {label:'y = x',v:'x'},{label:'y = 2x + 1',v:'2x + 1'},{label:'y = −x + 3',v:'-x + 3'},
-  {label:'y = x² − 4',v:'x² - 4'},{label:'y = −x² + 2x + 3',v:'-x² + 2x + 3'},{label:'y = x³ − 3x',v:'x³ - 3x'}
-];
-function setSrc(i,src){
-  const s=fm.fns[i]; s.src=src;
-  if(!String(src).trim()){s.f=null;s.err='';return;}
-  try{ const f=parseExpr(src); f(0); s.f=f; s.err=''; }
-  catch(e){ s.err='식을 읽지 못했어요. 이렇게 써 보세요: 2x + 1, x² - 1'; }
+const FM_DEF=[['','','1','1'],['','1','','-1'],['','','-1','1']];
+fm.fns.forEach((s,i)=>{s.v=FM_DEF[i].slice(); s.co=null; s.msg='';});
+function readCo(i){
+  const s=fm.fns[i], vals=s.v;      // vals: [x³, x², x, 상수] 칸에 쓴 글자
+  s.f=null; s.co=null; s.err='';
+  if(vals.every(v=>String(v).trim()==='')) return;
+  const co=[];
+  for(let k=0;k<4;k++){
+    const t=String(vals[3-k]).trim();
+    const n=t===''?0:Number(t);
+    if(!Number.isFinite(n)||!Number.isInteger(n)){ s.err='정수로 써 주세요'; return; }
+    if(Math.abs(n)>99){ s.err='−99부터 99까지 써 주세요'; return; }
+    co.push(n);
+  }
+  s.co=co; s.f=x=>hornerN(co,x);
 }
 function buildFmSlots(){
-  $('fmSlots').innerHTML=fm.fns.map((s,i)=>
-    '<li class="slot k'+i+'" data-i="'+i+'">'+
-    '<label class="sel"><input type="radio" name="fmAct" value="'+i+'" aria-label="함수 '+(i+1)+' 고르기"></label>'+
-    icon(i)+
-    '<div class="slot-main"><div class="fx-in"><label for="fx'+i+'">y =</label><input id="fx'+i+'" type="text" data-i="'+i+'" value="'+esc(s.src)+'" autocomplete="off" spellcheck="false" aria-label="함수 '+(i+1)+'의 식"></div><div class="meta" id="fxm'+i+'"></div></div>'+
-    '<div class="slot-r2"><div></div><div class="acts">'+
-      '<button type="button" class="mini" data-act="hide" data-i="'+i+'">숨기기</button>'+
-      '<button type="button" class="mini" data-act="clear" data-i="'+i+'">지우기</button></div></div></li>'
-  ).join('');
+  $('fmSlots').innerHTML=fm.fns.map((s,i)=>{
+    const cell=(k,sup)=>'<input class="cf" id="cf'+i+'_'+k+'" type="number" step="1" inputmode="numeric" data-i="'+i+'" data-k="'+k+'" value="'+esc(s.v[k])+'" aria-label="함수 '+(i+1)+'의 '+(k===3?'상수':(['3차','2차','1차'][k])+' 항 앞의 수')+'">';
+    return '<li class="slot fslot k'+i+'" data-i="'+i+'">'+icon(i)+
+    '<div class="slot-main"><div class="fx-in"><span class="eq">y =</span>'+
+      cell(0)+'<span class="tx">x<sup>3</sup> +</span>'+cell(1)+'<span class="tx">x<sup>2</sup> +</span>'+cell(2)+'<span class="tx">x +</span>'+cell(3)+
+    '</div><div class="meta" id="fxm'+i+'"></div></div>'+
+    '<div class="acts"><button type="button" class="mini" data-act="hide" data-i="'+i+'">숨기기</button>'+
+    '<button type="button" class="mini" data-act="clear" data-i="'+i+'">지우기</button></div></li>';
+  }).join('');
 }
 function updateFmSlotsUI(){
   fm.fns.forEach((s,i)=>{
     const li=$('fmSlots').children[i]; if(!li) return;
-    li.classList.toggle('active',i===fm.active);
     li.classList.toggle('off',!s.visible);
-    li.querySelector('input[type="radio"]').checked=(i===fm.active);
     li.querySelector('[data-act="hide"]').textContent=s.visible?'숨기기':'보이기';
-    const inp=$('fx'+i); inp.classList.toggle('bad',!!s.err);
-    $('fxm'+i).textContent=s.err?s.err:(String(s.src).trim()?'':'식을 쓰면 그래프가 그려져요');
+    li.querySelectorAll('.cf').forEach(inp=>inp.classList.toggle('bad',!!s.err));
+    let m='';
+    if(s.err) m=s.err;
+    else if(!s.co) m='빈칸에 숫자를 써 보세요';
+    else {
+      let d=s.co.length-1; while(d>0&&s.co[d]===0) d--;
+      m=NAMES[d]+' · '+intPoly(s.co.slice(0,d+1));
+    }
+    $('fxm'+i).innerHTML=m;
   });
 }
 function syncFmSlider(){
@@ -1118,8 +1142,8 @@ function renderFormula(){
   let curves='';
   fs.forEach((f,i)=>{if(f) curves+='<path class="curve st'+i+'" d="'+curvePath(f)+'"/>';});
   const x=fm.x;
-  let guide='<line class="guide" x1="'+f1(px(x))+'" y1="5" x2="'+f1(px(x))+'" y2="635"/>'+
-    '<text class="tag" x="'+f1(px(x))+'" y="'+(C+44)+'" text-anchor="middle">x = '+fmt(x)+'</text>';
+  let guide='<line class="guide" x1="'+f1(px(x))+'" y1="5" x2="'+f1(px(x))+'" y2="595"/>'+
+    '<text class="tag" x="'+f1(px(x))+'" y="'+(CY+44)+'" text-anchor="middle">x = '+fmt(x)+'</text>';
   const inter=computeInter(fs);
   let rings='', shown=0; const interPts=[];
   inter.list.forEach(it=>{ if(!it.res.same) it.res.pts.forEach(p=>{
@@ -1158,7 +1182,6 @@ function renderFormula(){
   gPts.innerHTML=rings+marks+placeLabels(labels.slice(0,14));
   $('fmVals').innerHTML=vals||'<li><span class="vnote">그릴 식이 없어요</span></li>';
   $('xNow').textContent='x = '+fmt(fm.x);
-  interBox($('fmInter'),inter.list,inter.count);
 }
 
 /* ---------- 모드 3: 퀴즈 ---------- */
@@ -1293,11 +1316,11 @@ function renderQuiz(){
   let guide='', pp='';
   const labels=[];
   if(q.type==='value'||q.type==='read'){
-    guide+='<line class="guide" x1="'+f1(px(q.x0))+'" y1="5" x2="'+f1(px(q.x0))+'" y2="635"/>';
-    guide+='<text class="tag" x="'+f1(px(q.x0))+'" y="'+(C+44)+'" text-anchor="middle">x = '+fmt(q.x0)+'</text>';
+    guide+='<line class="guide" x1="'+f1(px(q.x0))+'" y1="5" x2="'+f1(px(q.x0))+'" y2="595"/>';
+    guide+='<text class="tag" x="'+f1(px(q.x0))+'" y="'+(CY+44)+'" text-anchor="middle">x = '+fmt(q.x0)+'</text>';
   } else if(q.type==='inverse'){
-    guide+='<line class="guide" x1="5" y1="'+f1(py(q.y0))+'" x2="635" y2="'+f1(py(q.y0))+'"/>';
-    guide+='<text class="tag" x="'+(C+14)+'" y="'+f1(py(q.y0)-10)+'">y = '+fmt(q.y0)+'</text>';
+    guide+='<line class="guide" x1="5" y1="'+f1(py(q.y0))+'" x2="795" y2="'+f1(py(q.y0))+'"/>';
+    guide+='<text class="tag" x="'+(CX+14)+'" y="'+f1(py(q.y0)-10)+'">y = '+fmt(q.y0)+'</text>';
   }
   if(q.type==='pick'){
     q.marks.forEach(m=>{pp+=shape(0,m.x,m.y);labels.push({x:m.x,y:m.y,text:ptStr(m.x,m.y)});});
@@ -1327,7 +1350,7 @@ function setRange(r){
   if(mode==='points' && pt.pts.some(p=>Math.abs(p.x)>r||Math.abs(p.y)>r)){
     say('ptMsg','범위 밖에 점이 있어서 줄일 수 없어요. 그 점을 지워 주세요.'); return;
   }
-  R=r; U=300/R;
+  R=r; UX=380/R; UY=280/R;
   document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.r)===R)));
   drawStatic(); syncFmSlider(); render();
 }
@@ -1335,8 +1358,8 @@ function setRange(r){
 /* ---------- 그래프판 입력 ---------- */
 function lattice(e){
   const r=svg.getBoundingClientRect();
-  const sx=(e.clientX-r.left)*640/r.width, sy=(e.clientY-r.top)*640/r.height;
-  return {x:clamp(Math.round((sx-C)/U),-R,R), y:clamp(Math.round((C-sy)/U),-R,R)};
+  const sx=(e.clientX-r.left)*800/r.width, sy=(e.clientY-r.top)*600/r.height;
+  return {x:clamp(Math.round((sx-CX)/UX),-R,R), y:clamp(Math.round((CY-sy)/UY),-R,R)};
 }
 let cand=null, drag=null, tap=null;
 svg.addEventListener('pointerdown',e=>{
@@ -1453,39 +1476,18 @@ $('clearAll').addEventListener('click',()=>{ex.fns.forEach(s=>{s.pts=[];s.visibl
 
 // 식 → 그래프
 buildFmSlots();
-fm.fns.forEach((s,i)=>setSrc(i,s.src));
+fm.fns.forEach((s,i)=>readCo(i));
 $('fmSlots').addEventListener('input',e=>{
-  if(e.target.id && e.target.id.indexOf('fx')===0 && e.target.dataset.i){
-    const i=Number(e.target.dataset.i); fm.active=i; setSrc(i,e.target.value); renderFormula(); updateFoot();
-  }
-});
-$('fmSlots').addEventListener('focusin',e=>{
-  if(e.target.dataset && e.target.dataset.i && e.target.tagName==='INPUT' && e.target.type==='text'){
-    const i=Number(e.target.dataset.i); if(fm.active!==i){fm.active=i;updateFmSlotsUI();}
-  }
-});
-$('fmSlots').addEventListener('change',e=>{
-  if(e.target.name==='fmAct'){fm.active=Number(e.target.value);updateFmSlotsUI();}
+  const t=e.target; if(!t.classList.contains('cf')) return;
+  const i=Number(t.dataset.i); fm.fns[i].v[Number(t.dataset.k)]=t.value; fm.fns[i].visible=true;
+  readCo(i); renderFormula(); updateFoot();
 });
 $('fmSlots').addEventListener('click',e=>{
   const act=e.target.closest('button[data-act]'); if(!act) return;
   const i=Number(act.dataset.i), s=fm.fns[i];
   if(act.dataset.act==='hide') s.visible=!s.visible;
-  else { $('fx'+i).value=''; setSrc(i,''); s.visible=true; }
-  fm.active=i; render();
-});
-document.querySelectorAll('[data-ins]').forEach(b=>b.addEventListener('click',()=>{
-  const el=$('fx'+fm.active);
-  const s=el.selectionStart==null?el.value.length:el.selectionStart;
-  const t=el.selectionEnd==null?s:el.selectionEnd;
-  el.setRangeText(b.dataset.ins,s,t,'end');
-  setSrc(fm.active,el.value); renderFormula(); updateFoot(); el.focus();
-}));
-$('presets').innerHTML=PRESETS.map((p,i)=>'<button type="button" class="ghost" data-p="'+i+'">'+p.label+'</button>').join('');
-$('presets').addEventListener('click',e=>{
-  const b=e.target.closest('button[data-p]'); if(!b) return;
-  const i=fm.active; $('fx'+i).value=PRESETS[Number(b.dataset.p)].v; fm.fns[i].visible=true;
-  setSrc(i,$('fx'+i).value); render();
+  else { s.v=['','','','']; document.querySelectorAll('#fmSlots li:nth-child('+(i+1)+') .cf').forEach(inp=>{inp.value='';}); readCo(i); s.visible=true; }
+  render();
 });
 $('fmX').addEventListener('input',()=>{fm.x=Number($('fmX').value);renderFormula();});
 
@@ -1505,6 +1507,30 @@ $('qOpts').addEventListener('click',e=>{
 $('hintBtn').addEventListener('click',()=>{quiz.hint=true;$('hintBtn').hidden=true;renderQuiz();});
 $('nextBtn').addEventListener('click',nextQuestion);
 $('resetScore').addEventListener('click',()=>{quiz.score=0;quiz.total=0;quiz.streak=0;updateFoot();});
+
+// 전체 화면
+const fullBtn=$('fullBtn'), docEl=document.documentElement;
+const canFull=!!(docEl.requestFullscreen||docEl.webkitRequestFullscreen);
+const isFull=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+function paintFull(){
+  const on=isFull();
+  fullBtn.setAttribute('aria-pressed',String(on));
+  fullBtn.setAttribute('aria-label',on?'전체 화면 끄기':'전체 화면 켜기');
+  fullBtn.title=on?'전체 화면 끄기':'전체 화면';
+}
+if(!canFull){ fullBtn.hidden=true; }
+fullBtn.addEventListener('click',()=>{
+  const fail=()=>say('barNote','이 화면에서는 전체 화면을 쓸 수 없어요. 파일이나 웹 주소로 직접 열어 보세요.');
+  try{
+    let r;
+    if(isFull()) r=(document.exitFullscreen||document.webkitExitFullscreen).call(document);
+    else r=(docEl.requestFullscreen||docEl.webkitRequestFullscreen).call(docEl);
+    if(r&&r.catch) r.catch(fail);
+  }catch(err){ fail(); }
+});
+document.addEventListener('fullscreenchange',paintFull);
+document.addEventListener('webkitfullscreenchange',paintFull);
+paintFull();
 
 // 글자 크기, 야간 모드
 const app=$('app');
