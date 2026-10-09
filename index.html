@@ -1,9 +1,4 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="점을 찍어 1·2·3차 함수를 만들고, 식을 그래프로 그리고, 퀴즈로 연습하는 초등 고학년용 함수 앱">
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="f(x) 함수 찍기 - 점을 찍고 식을 쓰며 함수 그래프를 익혀요">
 <title>f(x) 함수 찍기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,10 +80,12 @@ i{font-style:italic}
 .barbtn:hover{border-color:var(--desk-ink)}
 .barbtn[aria-pressed="true"]{background:var(--desk-ink);color:var(--desk);border-color:var(--desk-ink)}
 
-.spread{position:relative;display:flex;flex-wrap:wrap;box-shadow:0 26px 60px rgba(0,0,0,.45)}
+.spread{position:relative;display:flex;flex-direction:column;box-shadow:0 26px 60px rgba(0,0,0,.45);--gh:clamp(340px,calc(62vh - 20px),880px)}
+.spread[data-q="1"]{--gh:clamp(300px,calc(100vh - 590px),740px)}
+.spread[data-q="1"] .right{order:-1}
 .page{position:relative;min-width:0;background:var(--page);color:var(--ink)}
-.left{flex:1.5 1 560px;padding:28px 36px 36px;box-shadow:inset -26px 0 30px -26px rgba(0,0,0,.3)}
-.right{flex:1 1 400px;padding:28px 36px 28px 36px;box-shadow:inset 26px 0 30px -26px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px}
+.left{padding:12px 12px 12px}
+.right{padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px}
 .runhead{display:flex;justify-content:space-between;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--rule);font:400 .875rem var(--body);color:var(--muted)}
 .left .runhead{margin-bottom:16px}
 .ribbon{position:absolute;top:0;right:6px;width:26px;height:64px;background:var(--ribbon);clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%)}
@@ -101,21 +98,55 @@ i{font-style:italic}
 .barbtn.icon[aria-pressed="true"] .i-in{display:none}
 
 /* 식 → 그래프: 네모 빈칸 */
-.fslot{grid-template-columns:auto minmax(0,1fr) auto}
-.fx-in{display:flex;flex-wrap:wrap;align-items:center;gap:2px 4px}
-.eq{font:700 1.0625rem var(--display);margin-right:2px}
-.tx{font:italic 700 1.0625rem var(--display);white-space:nowrap}
+.fslot{display:flex!important;flex-wrap:wrap;align-items:center;gap:0 5px}
+.fslot .slot-main{flex:0 1 auto}
+.fslot .acts{margin-left:auto;flex-direction:row;align-items:center;gap:0;flex:1 1 auto;justify-content:flex-end}
+.fx-in{display:flex;flex-wrap:wrap;align-items:center;gap:2px 3px}
+.eq{font:700 .9375rem var(--display);margin-right:1px}
+.tx{font:italic 700 .9375rem var(--display);white-space:nowrap}
 .tx sup{font-size:.6em;line-height:0;vertical-align:.7em}
-.cf{width:46px;height:38px;padding:0;border:1.5px solid var(--rule-strong);background:var(--paper);color:var(--ink);text-align:center;font:700 1.0625rem var(--body);border-radius:0;-moz-appearance:textfield;appearance:textfield}
+.cw{display:inline-flex;align-items:stretch}
+.arr{display:flex;flex-direction:column}
+.ar{width:18px;flex:1;min-height:14px;padding:0;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--rule-strong);border-left:0;background:var(--tab);color:var(--ink);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.ar+.ar{border-top:0}
+.ar:active{background:var(--ink);color:var(--page)}
+.k0 .ar{border-color:var(--c1)} .k1 .ar{border-color:var(--c2)} .k2 .ar{border-color:var(--c3)}
+.cf{width:28px;height:28px;padding:0;border:1.5px solid var(--rule-strong);background:var(--paper);color:var(--ink);text-align:center;font:700 .9375rem var(--body);border-radius:0;-moz-appearance:textfield;appearance:textfield}
 .cf::-webkit-inner-spin-button,.cf::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .k0 .cf{border-color:var(--c1)} .k1 .cf{border-color:var(--c2)} .k2 .cf{border-color:var(--c3)}
 .cf.bad{border-color:var(--bad)!important;background:var(--bad-soft)}
-.fslot .acts{flex-direction:column;gap:0;margin-left:0}
 .vals{list-style:none;padding:0;display:flex;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
 .vals li{display:flex;align-items:center;font-variant-numeric:tabular-nums;flex:1;justify-content:center;gap:6px;border-bottom:0;border-right:1px solid var(--rule);padding:6px 4px;font:700 1rem var(--body)}
 .vals li:last-child{border-right:0}
 .vals .ico{width:20px;height:20px}
 .vals .vnote{display:none}
+
+/* 그래프 위 겹침 창 */
+.ov{position:absolute;z-index:3;background:var(--page);background:color-mix(in srgb,var(--page) 88%,transparent);border:1px solid var(--rule-strong);box-shadow:0 3px 14px rgba(0,0,0,.14)}
+.ov-tl{top:8px;left:8px;width:max-content;min-width:200px;max-width:calc(50% - 12px);max-height:calc(100% - 16px);display:flex;flex-direction:column}
+.ov-h{display:flex;align-items:center;gap:4px;padding:2px 4px 2px 8px;border-bottom:1px solid var(--rule)}
+.ov-h b{font:800 .8125rem var(--display);margin-right:auto;white-space:nowrap}
+.ov-b{overflow:auto;padding:2px 6px 4px}
+.ov.collapsed .ov-b{display:none}
+.ov.collapsed #ovAdd,.ov.collapsed #ptClear{display:none}
+.ov.collapsed .ov-f{border-top:0}
+.ov-f{display:flex;align-items:center;gap:4px;padding:2px 6px;border-top:1px solid var(--rule)}
+.ov-f .ov-btn:first-child{margin-right:auto}
+.ov-f #ovTog{margin-left:auto}
+.ov-btn{min-height:26px;padding:0 7px;background:transparent;border:1px solid var(--rule-strong);color:var(--ink);font:700 .75rem var(--ui);cursor:pointer}
+.ov-btn:disabled{opacity:.4;cursor:default}
+.ov-btn.plain{border-color:transparent;color:var(--muted);font-weight:400;text-decoration:underline}
+.ov .slots{border:0}
+.ov .slot{padding:3px 0;grid-template-columns:auto auto minmax(0,1fr) auto;gap:0 6px}
+.ov .slot .sel{width:22px;height:30px}
+.ov .ico{width:22px;height:22px}
+.ov .formula{font-size:1rem}
+.ov .chips2{grid-column:2 / -1}
+.ov .chip{font-size:.75rem}
+.ov .chip button{width:24px;height:24px}
+.ov .mini{min-height:26px;padding:0 5px;font-size:.6875rem}
+.deg{margin-left:6px;font:400 .6875rem var(--ui);color:var(--muted);white-space:nowrap}
+.ov-b .chips{padding:2px 0}
 
 /* 파일 탭 (책 위쪽에 항상 고정) */
 .binder{display:flex;flex-direction:column}
@@ -128,37 +159,38 @@ i{font-style:italic}
 .tab .no{display:inline-block;margin-right:6px;font:700 .8125rem var(--ui);color:var(--accent);font-variant-numeric:tabular-nums}
 
 /* 그래프 */
-.frame{border:2px solid var(--ink);padding:6px;background:var(--paper)}
-.frame svg{display:block;width:100%;height:auto;background:var(--paper);touch-action:manipulation;user-select:none;-webkit-user-select:none}
-.fig-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin-top:10px}
+.frame{position:relative;height:var(--gh);border:2px solid var(--ink);background:var(--paper);overflow:hidden}
+.frame>svg{display:block;width:100%;height:100%;background:var(--paper);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.fig-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;margin-top:8px}
 .seg{display:flex;align-items:center;gap:6px;font:400 .875rem var(--ui);color:var(--muted)}
-.seg button{min-height:40px;min-width:56px;padding:0 10px;background:transparent;border:1px solid var(--rule-strong);color:var(--ink);font:700 .9375rem var(--body);cursor:pointer}
+.seg button{min-height:34px;min-width:50px;padding:0 10px;background:transparent;border:1px solid var(--rule-strong);color:var(--ink);font:700 .9375rem var(--body);cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
 .cursor{font:700 .9375rem var(--body);color:var(--muted);font-variant-numeric:tabular-nums}
 figcaption{margin-top:10px;font:400 .9375rem/1.7 var(--body);color:var(--muted)}
 figcaption b{font-family:var(--display);color:var(--ink)}
 
 .grid{fill:none;stroke:var(--grid);stroke-width:1}
-.grid.major{stroke:var(--grid-major);stroke-width:1.4}
-.axis{fill:none;stroke:var(--axis);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.grid.major{stroke:var(--grid-major);stroke-width:1.2}
+.axis{fill:none;stroke:var(--axis);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .tickmark{stroke:var(--axis);stroke-width:1.5}
-.tick{font:700 16px var(--body);fill:var(--muted)}
-.axname{font:italic 700 28px var(--display);fill:var(--ink)}
-.curve{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.tick{font:700 12px var(--body);fill:var(--muted)}
+.axname{font:italic 700 20px var(--display);fill:var(--ink)}
+.curve{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .st0{stroke:var(--c1)} .st1{stroke:var(--c2)} .st2{stroke:var(--c3)}
 .fl0{fill:var(--c1)} .fl1{fill:var(--c2)} .fl2{fill:var(--c3)}
 .mk{stroke:var(--paper);stroke-width:1.5}
-.ring{fill:none;stroke:var(--ink);stroke-width:1.8}
-.guide{stroke:var(--accent);stroke-width:2;fill:none}
+.ring{fill:none;stroke:var(--ink);stroke-width:1.4}
+.guide{stroke:var(--accent);stroke-width:1.6;fill:none}
 .guide.bad{stroke:var(--bad)}
-.vline{stroke:var(--bad);stroke-width:2;fill:none}
+.vline{stroke:var(--bad);stroke-width:1.6;fill:none}
 .ghost-mk{fill:var(--ink);opacity:.3}
+.ghost-mk.fl0,.ghost-mk.fl1,.ghost-mk.fl2{opacity:.45}
 .hit{fill:none;pointer-events:all;cursor:grab;touch-action:none}
-.lbl{font:700 19px var(--body);fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:7px;stroke-linejoin:round}
+.lbl{font:700 14px var(--body);fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
 .lbl.bad{fill:var(--bad)}
 .lbl.soft{opacity:.6}
-.tag{font:700 18px var(--ui);fill:var(--accent);paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
-.qring{fill:var(--paper);stroke:var(--accent);stroke-width:1.75}
+.tag{font:700 13px var(--ui);fill:var(--accent);paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
+.qring{fill:var(--paper);stroke:var(--accent);stroke-width:1.5}
 .qring.bad{stroke:var(--bad)}
 .qgood{fill:var(--good);stroke:var(--paper);stroke-width:1}
 
@@ -182,6 +214,9 @@ h2{font:800 1.5rem/1.3 var(--display);color:var(--ink)}
 .slot-main{min-width:0}
 .formula{font:700 1.125rem/1.25 var(--display);overflow-wrap:anywhere}
 .k0 .formula{color:var(--c1)} .k1 .formula{color:var(--c2)} .k2 .formula{color:var(--c3)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;font-size:.78em;margin:0 .12em;font-variant-numeric:tabular-nums}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .18em}
+.frac>span:last-child{padding:0 .18em}
 .formula sup{font-size:.6em;line-height:0;vertical-align:.7em}
 .empty{font:400 .875rem var(--ui);color:var(--muted)}
 .warn{font:700 .875rem var(--ui);color:var(--bad)}
@@ -220,8 +255,8 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
 
 /* 퀴즈 */
 .lvs{display:flex;gap:6px}
-.ptm{fill:var(--ink);stroke:var(--paper);stroke-width:2}
-.ptq{fill:var(--accent);stroke:var(--paper);stroke-width:2}
+.ptm{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.ptq{fill:var(--accent);stroke:var(--paper);stroke-width:1.5}
 .big{font:800 1.5rem var(--display);color:var(--c1);white-space:nowrap}
 .read{display:flex;flex-direction:column;gap:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:var(--hl);padding:6px 12px}
 .read b{font:800 1.5rem var(--display);color:var(--c1)}
@@ -254,40 +289,28 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
 .track{flex:1;height:4px;background:var(--desk-line)}
 .track i{display:block;height:100%;width:0;background:var(--desk-ink)}
 
-@media (max-width:1000px){
-  .left,.right{box-shadow:none}
+@media (min-width:1100px){
+  .spread{flex-direction:row}
+  .left{flex:1 1 0;min-width:0}
+  .right{flex:0 0 348px}
+  .spread,.spread[data-q="1"]{--gh:clamp(460px,calc(100vh - 260px),880px)}
 }
 @media (max-width:900px){
-  .runhead{display:none}
   .desk{gap:10px}
   .bar{padding-top:10px}
   .brand p{display:none}
-  .left{padding:14px 16px 12px}
-  .right{padding:14px 16px 16px;gap:10px}
-  .frame,.fig-tools{width:clamp(300px,58vh,100%);margin-inline:auto}
-  .fig-tools{margin-top:6px}
-  .ribbon{display:none}
   .tabs{padding-left:0}
   .tab{flex:1 1 0;padding:0 10px;letter-spacing:0;white-space:normal;line-height:1.25;font-size:.8125rem;clip-path:polygon(0 100%,8px 0,calc(100% - 8px) 0,100% 100%)}
   .tab .no{display:none}
-  .spread[data-mode="quiz"] .right{order:-1}
 }
 @media (max-width:560px){
-  .fslot{grid-template-columns:auto minmax(0,1fr)}
-  .fslot .acts{grid-column:2;flex-direction:row;justify-content:flex-end}
-  .cf{width:42px;height:36px}
-  .tick{font-size:26px}
-  .lbl{font-size:28px}
-  .tag{font-size:26px}
-  .axname{font-size:36px}
   .brand h1{font-size:1.375rem}
-  .brand p{display:none}
   h2{font-size:1.5rem}
+  .ov-tl{max-width:calc(100% - 16px)}
 }
 </style>
 
-</head>
-<body>
+</head><body>
 <div class="desk" id="app">
   <header class="bar">
     <div class="brand">
@@ -313,13 +336,12 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
     <button class="tab" role="tab" aria-selected="false" data-mode="quiz"><span class="no">4</span>퀴즈</button>
   </nav>
   <main class="spread" id="spread" data-mode="explore">
-    <!-- 왼쪽 쪽: 그래프판 -->
+    <!-- 그래프판 -->
     <section class="page left">
-      <div class="runhead"><span id="lhLeft">제1장 · 점 찍기</span><i>f(x) 함수 찍기</i></div>
       <figure>
-        <div class="frame">
-          <svg id="plot" viewBox="0 0 800 600" role="img" aria-label="좌표평면 그래프판. 가로는 x, 세로는 y예요.">
-            <defs><clipPath id="clipPlot"><rect x="5" y="5" width="790" height="590"/></clipPath></defs>
+        <div class="frame" id="frame">
+          <svg id="plot" viewBox="0 0 800 600" role="img" aria-label="좌표평면 그래프판. 가로는 x, 세로는 y예요. 칸은 항상 정사각형이에요.">
+            <defs><clipPath id="clipPlot"><rect id="clipRect" x="4" y="4" width="792" height="592"/></clipPath></defs>
             <g id="gGrid"></g>
             <g id="gAxes"></g>
             <g id="gCurve" clip-path="url(#clipPlot)"></g>
@@ -328,6 +350,20 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
             <g id="gGhost"></g>
             <g id="gHit"></g>
           </svg>
+
+          <div class="ov ov-tl" id="ov" hidden>
+            <div class="ov-b">
+              <div data-ov="points"><div class="chips" id="ptChips"></div></div>
+              <ul class="slots" id="exSlots" data-ov="explore"></ul>
+              <ul class="slots" id="fmSlots" data-ov="formula"></ul>
+            </div>
+            <div class="ov-f">
+              <button type="button" class="ov-btn" id="ovAdd">＋ 추가</button>
+              <button type="button" class="ov-btn plain" id="ptClear">모두 지우기</button>
+              <button type="button" class="ov-btn plain" id="ovTog" aria-expanded="true" aria-label="목록 접기">접기</button>
+            </div>
+          </div>
+
         </div>
         <div class="fig-tools">
           <div class="seg" role="group" aria-label="그래프판 범위">
@@ -343,8 +379,6 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
 
     <!-- 오른쪽 쪽 -->
     <section class="page right">
-      <div class="ribbon" aria-hidden="true"></div>
-      <div class="runhead"><i id="rhLeft">점 찍기</i><span id="rhRight"></span></div>
 
       <!-- 점 찍기 연습 -->
       <div class="panel" data-panel="points">
@@ -366,11 +400,6 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
             <input id="ptY" type="number" step="1" placeholder="4">
             <button type="submit" class="btn">찍기</button>
           </form>
-          <div>
-            <div class="row3">찍은 점들</div>
-            <div class="chips" id="ptChips" style="margin-top:6px"></div>
-            <div class="row" style="margin-top:6px"><button type="button" class="link" id="ptClear">모두 지우기</button></div>
-          </div>
           <p class="msg" id="ptMsg" aria-live="polite"></p>
         </div>
 
@@ -398,12 +427,9 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
       <div class="panel" data-panel="explore" hidden>
         <div>
           <h2>점으로 함수식 만들기</h2>
-          <p class="lead">함수를 고르고 판을 눌러 점을 찍어요. 점은 4개(3차 곡선)까지 찍을 수 있어요.</p>
+          <p class="lead">그래프 위쪽 목록에서 함수(색)를 고르고 판을 눌러 점을 찍어요. 점은 함수마다 4개(3차 곡선)까지 찍을 수 있고, 고른 색의 점을 다시 누르면 지워져요. 다른 색 점과 같은 자리에도 찍을 수 있어요. 목록 아래 ＋ 추가를 누르면 함수가 하나 더 생겨요.</p>
         </div>
-        <div>
-          <div class="cap"><b>표 1.</b> 지금 판 위에 있는 함수</div>
-          <ul class="slots" id="exSlots"></ul>
-        </div>
+        <div class="nbox" id="exFacts" hidden></div>
         <div class="nbox" id="exInter"></div>
         <form class="coord" id="coordForm" autocomplete="off">
           <span class="ttl">점 추가</span>
@@ -427,14 +453,14 @@ input[type="range"]{width:100%;accent-color:var(--ink);height:32px}
       <div class="panel" data-panel="formula" hidden>
         <div>
           <h2>식으로 그래프 그리기</h2>
-          <p class="lead">빈칸에 숫자를 쓰면 그래프가 그려져요. 쓰지 않은 칸은 0이에요.</p>
+          <p class="lead">그래프 위쪽 빈칸에 숫자를 써요. ▲▼로 1씩 바꿀 수 있어요. 쓰지 않은 칸은 0이에요. 목록 아래 ＋ 추가를 누르면 식이 하나 더 생겨요.</p>
         </div>
-        <ul class="slots" id="fmSlots"></ul>
         <div>
           <div class="row3">x에 숫자 넣어 보기 <span class="xnow" id="xNow"></span></div>
           <input type="range" id="fmX" min="-20" max="20" step="1" value="3" aria-label="x 값 고르기">
           <ul class="vals" id="fmVals"></ul>
         </div>
+        <div class="nbox" id="fmSimple" hidden></div>
       </div>
 
       <!-- 퀴즈 -->
@@ -693,45 +719,67 @@ const ptNum=(x,y)=>'('+fmtNum(x)+', '+fmtNum(y)+')';
 const svg=$('plot'), gGrid=$('gGrid'), gAxes=$('gAxes'), gCurve=$('gCurve'),
       gGuide=$('gGuide'), gPts=$('gPts'), gGhost=$('gGhost'), gHit=$('gHit');
 
-/* ---------- 그래프판 ---------- */
-const CX=400, CY=300;
-let R=20, UX=19, UY=14;
-const px=x=>CX+x*UX, py=y=>CY-y*UY;
+/* ---------- 그래프판 (칸은 항상 정사각형) ---------- */
+const clipRect=$('clipRect'), frame=$('frame');
+let W=800,H=600,CX=400,CY=300,R=20,U=15,MX=20,MY=20;
+const px=x=>CX+x*U, py=y=>CY-y*U;
 const f1=v=>v.toFixed(1);
+const visX=x=>Math.abs(x)<=MX+0.5, visY=y=>Math.abs(y)<=MY+0.5;
+const inView=p=>Math.abs(p.x)<=MX&&Math.abs(p.y)<=MY;
+function layout(){
+  const r=svg.getBoundingClientRect();
+  W=Math.max(220,Math.round(r.width)); H=Math.max(220,Math.round(r.height));
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  clipRect.setAttribute('width',W-8); clipRect.setAttribute('height',H-8);
+  CX=W/2; CY=H/2;
+  U=(Math.min(W,H)/2-14)/R;                 // 짧은 쪽이 ±R칸
+  MX=Math.floor((W/2-8)/U); MY=Math.floor((H/2-8)/U);   // 긴 쪽은 더 많은 칸
+}
 
 function drawStatic(){
   let minor='', major='';
-  for(let n=-R;n<=R;n++){
+  const gx=Math.floor(CX/U), gy=Math.floor(CY/U);
+  for(let n=-gx;n<=gx;n++){
     if(n===0) continue;
-    const seg='M'+f1(px(n))+' 5V595M5 '+f1(py(n))+'H795';
-    if(n%5===0) major+=seg; else minor+=seg;
+    const s='M'+f1(px(n))+' 0V'+H;
+    if(n%5===0) major+=s; else minor+=s;
+  }
+  for(let n=-gy;n<=gy;n++){
+    if(n===0) continue;
+    const s='M0 '+f1(py(n))+'H'+W;
+    if(n%5===0) major+=s; else minor+=s;
   }
   gGrid.innerHTML='<path class="grid" d="'+minor+'"/><path class="grid major" d="'+major+'"/>';
-  let a='<path class="axis" d="M5 '+CY+'H786M'+CX+' 595V10M770 290L786 '+CY+'L770 310M390 26L'+CX+' 10L410 26"/>';
-  const step=R<=10?1:5;
-  for(let n=step;n<=R;n+=step){
-    const odd=(R<=10&&n%2===1)?' t-odd':'';
+  let a='<path class="axis" d="M4 '+CY+'H'+(W-5)+'M'+(W-17)+' '+(CY-6)+'L'+(W-5)+' '+CY+'L'+(W-17)+' '+(CY+6)+
+        'M'+CX+' '+(H-4)+'V5M'+(CX-6)+' 17L'+CX+' 5L'+(CX+6)+' 17"/>';
+  const step=[1,5,10].find(s=>s*U>=30)||10;
+  const tx=Math.floor((CX-20)/U), ty=Math.floor((CY-18)/U);
+  for(let n=step;n<=Math.max(tx,ty);n+=step){
     [-1,1].forEach(sg=>{
       const v=n*sg;
-      a+='<line class="tickmark" x1="'+f1(px(v))+'" y1="'+(CY-5)+'" x2="'+f1(px(v))+'" y2="'+(CY+5)+'"/>';
-      a+='<text class="tick'+odd+'" x="'+f1(px(v))+'" y="'+(CY+22)+'" text-anchor="middle">'+fmt(v)+'</text>';
-      a+='<line class="tickmark" x1="'+(CX-5)+'" y1="'+f1(py(v))+'" x2="'+(CX+5)+'" y2="'+f1(py(v))+'"/>';
-      a+='<text class="tick'+odd+'" x="'+(CX-10)+'" y="'+f1(py(v)+5)+'" text-anchor="end">'+fmt(v)+'</text>';
+      if(n<=tx){
+        a+='<line class="tickmark" x1="'+f1(px(v))+'" y1="'+(CY-4)+'" x2="'+f1(px(v))+'" y2="'+(CY+4)+'"/>';
+        a+='<text class="tick" x="'+f1(px(v))+'" y="'+(CY+18)+'" text-anchor="middle">'+fmt(v)+'</text>';
+      }
+      if(n<=ty){
+        a+='<line class="tickmark" x1="'+(CX-4)+'" y1="'+f1(py(v))+'" x2="'+(CX+4)+'" y2="'+f1(py(v))+'"/>';
+        a+='<text class="tick" x="'+(CX-9)+'" y="'+f1(py(v)+4)+'" text-anchor="end">'+fmt(v)+'</text>';
+      }
     });
   }
-  a+='<text class="tick" x="'+(CX-10)+'" y="'+(CY+22)+'" text-anchor="end">0</text>';
-  a+='<text class="axname" x="788" y="'+(CY-14)+'" text-anchor="end">x</text>';
-  a+='<text class="axname" x="'+(CX+16)+'" y="30">y</text>';
+  a+='<text class="tick" x="'+(CX-9)+'" y="'+(CY+18)+'" text-anchor="end">0</text>';
+  a+='<text class="axname" x="'+(W-8)+'" y="'+(CY-12)+'" text-anchor="end">x</text>';
+  a+='<text class="axname" x="'+(CX+12)+'" y="22">y</text>';
   gAxes.innerHTML=a;
 }
 
 function curvePath(f){
-  const N=600, x0=-R-0.5, step=(2*R+1)/N;
+  const half=W/2/U+1, N=Math.max(300,Math.round(W*1.2)), x0=-half, step=2*half/N;
   let d='', pen=false, prev=null;
   for(let i=0;i<=N;i++){
     const x=x0+i*step, y=f(x);
     if(!isFinite(y)||Math.abs(y)>1e4){pen=false;prev=null;continue;}
-    if(prev!==null&&Math.abs(y-prev)>6*R) pen=false;
+    if(prev!==null&&Math.abs(y-prev)>6*MY) pen=false;
     d+=(pen?'L':'M')+f1(px(x))+' '+f1(py(y))+' ';
     pen=true; prev=y;
   }
@@ -739,8 +787,8 @@ function curvePath(f){
 }
 
 /* 점 모양: 모두 동그라미 (색으로 구분) */
-function shape(i,x,y){
-  return '<circle class="mk fl'+i+'" cx="'+f1(px(x))+'" cy="'+f1(py(y))+'" r="5"/>';
+function shape(i,x,y,r){
+  return '<circle class="mk fl'+i+'" cx="'+f1(px(x))+'" cy="'+f1(py(y))+'" r="'+(r||4.5)+'"/>';
 }
 function icon(i){
   return '<svg class="ico" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle class="fl'+i+'" cx="14" cy="14" r="12"/><text x="14" y="19">'+(i+1)+'</text></svg>';
@@ -750,13 +798,13 @@ function icon(i){
 function placeLabels(items){
   const placed=[]; let out='';
   items.forEach(it=>{
-    const w=it.text.length*9.2+8, h=20;
+    const w=it.text.length*8.2+8, h=18;
     const cx=px(it.x), cy=py(it.y);
-    const cands=[[13,-12,'start'],[13,26,'start'],[-13,-12,'end'],[-13,26,'end'],[13,-34,'start'],[-13,-34,'end'],[13,48,'start']];
+    const cands=[[10,-9,'start'],[10,20,'start'],[-10,-9,'end'],[-10,20,'end'],[10,-28,'start'],[-10,-28,'end'],[10,38,'start']];
     for(let k=0;k<cands.length;k++){
       const dx=cands[k][0], dy=cands[k][1], an=cands[k][2];
       const x0=an==='start'?cx+dx:cx+dx-w, y0=cy+dy-h+4;
-      if(x0<6||x0+w>794||y0<6||y0+h>594) continue;
+      if(x0<6||x0+w>W-6||y0<6||y0+h>H-6) continue;
       if(placed.some(p=>x0<p.x1&&x0+w>p.x0&&y0<p.y1&&y0+h>p.y0)) continue;
       placed.push({x0:x0,x1:x0+w,y0:y0,y1:y0+h});
       out+='<text class="lbl'+(it.cls?' '+it.cls:'')+'" x="'+f1(cx+dx)+'" y="'+f1(cy+dy)+'" text-anchor="'+an+'">'+it.text+'</text>';
@@ -774,16 +822,6 @@ function say(id,text){
 }
 
 /* ---------- 모드 공통 ---------- */
-const MODES={
-  points:{ch:'제1장 · 점 찍기',rh:'점 찍기',rr:'(가로, 세로) 순서로 읽어요',
-    cap:'<b>그림 1.</b> 좌표평면. 점의 자리는 가로 칸 수(x)를 먼저, 세로 칸 수(y)를 나중에 써요. 노란 선은 가운데에서 그 점까지 가는 길이에요.'},
-  explore:{ch:'제2장 · 점 → 함수식',rh:'점 → 함수식',rr:'함수 3개까지 비교',
-    cap:'<b>그림 1.</b> 한 판 위의 함수들. 선은 모두 실선이고, 색으로 구분해요. 동그라미로 둘러싼 곳이 서로 만나는 점이에요.'},
-  formula:{ch:'제3장 · 식 → 그래프',rh:'식 → 그래프',rr:'함수 3개까지 비교',
-    cap:'<b>그림 1.</b> 식으로 그린 그래프. 노란 세로선은 고른 x의 자리이고, 선 위의 점이 그때의 y예요.'},
-  quiz:{ch:'제4장 · 퀴즈',rh:'퀴즈',rr:'',
-    cap:'<b>그림 1.</b> 문제 그래프. 노란 선은 문제에서 묻는 자리를 알려 줘요.'}
-};
 let mode='points';
 const spread=$('spread');
 
@@ -792,13 +830,24 @@ function setMode(m){
   spread.dataset.mode=m;
   document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.mode===m)));
   document.querySelectorAll('[data-panel]').forEach(s=>{s.hidden=s.dataset.panel!==m;});
-  $('lhLeft').textContent=MODES[m].ch;
-  $('rhLeft').textContent=MODES[m].rh;
   gGhost.innerHTML='';
   if(m==='formula') syncFmSlider();
   render();
 }
+function syncChrome(){
+  const quizLike=mode==='quiz'||(mode==='points'&&pt.sub==='quiz');
+  spread.dataset.q=quizLike?'1':'';
+  const show=mode==='explore'||mode==='formula'||(mode==='points'&&pt.sub==='free');
+  const ov=$('ov'); ov.hidden=!show;
+  document.querySelectorAll('[data-ov]').forEach(el=>{el.hidden=el.dataset.ov!==mode;});
+  $('ovAdd').hidden=mode==='points';
+  $('ptClear').hidden=mode!=='points';
+  ov.classList.toggle('wide',mode==='formula');
+  const list=mode==='explore'?ex.fns:fm.fns;
+  $('ovAdd').disabled=list.every(s=>s.on);
+}
 function render(){
+  syncChrome();
   gCurve.innerHTML='';gGuide.innerHTML='';gPts.innerHTML='';gGhost.innerHTML='';
   if(mode!=='explore') gHit.innerHTML='';
   if(mode==='points') renderPoints();
@@ -810,20 +859,16 @@ function render(){
 function updateFoot(){
   let l='', r='', w=0;
   if(mode==='points'){
-    $('rhRight').textContent=MODES.points.rr;
     if(pt.sub==='free'){ l='찍은 점 '+pt.pts.length+'개'; r='점 찍기'; w=pt.pts.length/PT_MAX; }
     else { l='맞힌 문제 '+pt.score+' / '+pt.total; r='연속 '+pt.streak+'번'; w=pt.total?pt.score/pt.total:0; }
   } else if(mode==='explore'){
-    const n=ex.fns.filter(s=>s.pts.length>0).length;
+    const n=ex.fns.filter(s=>s.on&&s.pts.length>0).length;
     l='함수 '+n+' / 3 사용 중'; r='점 → 함수식'; w=n/3;
-    $('rhRight').textContent=MODES.explore.rr;
   } else if(mode==='formula'){
-    const n=fm.fns.filter(s=>s.f).length;
+    const n=fm.fns.filter(s=>s.on&&s.f).length;
     l='식 '+n+' / 3 사용 중'; r='식 → 그래프'; w=n/3;
-    $('rhRight').textContent=MODES.formula.rr;
   } else {
     l='맞힌 문제 '+quiz.score+' / '+quiz.total; r='연속 '+quiz.streak+'번'; w=quiz.total?quiz.score/quiz.total:0;
-    $('rhRight').textContent=l;
   }
   $('footL').textContent=l; $('footR').textContent=r; $('footBar').style.width=Math.round(w*100)+'%';
 }
@@ -849,7 +894,7 @@ function computeInter(fs){
   const list=[]; let count=0;
   fs.forEach(f=>{if(f)count++;});
   for(let i=0;i<3;i++) for(let j=i+1;j<3;j++){
-    if(fs[i]&&fs[j]) list.push({i:i,j:j,res:findIntersections(fs[i],fs[j],R)});
+    if(fs[i]&&fs[j]) list.push({i:i,j:j,res:findIntersections(fs[i],fs[j],MX)});
   }
   return {list:list,count:count};
 }
@@ -857,7 +902,6 @@ function computeInter(fs){
 /* ---------- 모드 1: 점 찍기 연습 ---------- */
 const PT_MAX=12;
 const pt={sub:'free',pts:[],last:null,level:1,score:0,total:0,streak:0,q:null,answered:false,first:true,wrong:null,revealed:false,picked:-1};
-const inR=p=>Math.abs(p.x)<=R&&Math.abs(p.y)<=R;
 function walkText(x,y){
   const a=x===0?'':(x>0?'오른쪽으로 '+x+'칸':'왼쪽으로 '+(-x)+'칸');
   const b=y===0?'':(y>0?'위로 '+y+'칸':'아래로 '+(-y)+'칸');
@@ -906,11 +950,11 @@ function renderPoints(){
   if(pt.sub==='free') renderPtFree(); else renderPtQuiz();
 }
 function renderPtFree(){
-  const vis=pt.pts.filter(inR);
+  const vis=pt.pts.filter(inView);
   let guide='', marks='', labels=[];
   if(pt.last && vis.some(p=>p.x===pt.last.x&&p.y===pt.last.y)) guide=guideTo(pt.last.x,pt.last.y);
   vis.forEach(p=>{
-    marks+='<circle class="ptm" cx="'+f1(px(p.x))+'" cy="'+f1(py(p.y))+'" r="6.5"/>';
+    marks+='<circle class="ptm" cx="'+f1(px(p.x))+'" cy="'+f1(py(p.y))+'" r="5"/>';
     labels.push({x:p.x,y:p.y,text:ptStr(p.x,p.y)});
   });
   gGuide.innerHTML=guide;
@@ -920,7 +964,7 @@ function renderPtFree(){
     ?'<b>'+ptStr(L.x,L.y)+'</b><span>x = '+fmt(L.x)+' : '+(L.x===0?'가로로는 움직이지 않아요':(L.x>0?'오른쪽으로 '+L.x+'칸':'왼쪽으로 '+(-L.x)+'칸'))+'<br>y = '+fmt(L.y)+' : '+(L.y===0?'세로로는 움직이지 않아요':(L.y>0?'위로 '+L.y+'칸':'아래로 '+(-L.y)+'칸'))+'</span>'
     :'<span>판을 눌러 보세요. 누른 점의 자리를 여기에서 읽어 드려요.</span>';
   $('ptChips').innerHTML=pt.pts.length
-    ?pt.pts.map((p,k)=>'<span class="chip">'+ptStr(p.x,p.y)+(inR(p)?'':' (범위 밖)')+'<button type="button" data-pk="'+k+'" aria-label="점 '+ptStr(p.x,p.y)+' 지우기">×</button></span>').join('')
+    ?pt.pts.map((p,k)=>'<span class="chip">'+ptStr(p.x,p.y)+(inView(p)?'':' (범위 밖)')+'<button type="button" data-pk="'+k+'" aria-label="점 '+ptStr(p.x,p.y)+' 지우기">×</button></span>').join('')
     :'<span class="empty" style="color:var(--muted);font:400 .875rem var(--ui)">아직 찍은 점이 없어요</span>';
 }
 function ptFree_toggle(x,y){
@@ -941,13 +985,13 @@ function renderPtQuiz(){
     tip.textContent='x는 가로(오른쪽이 +), y는 세로(위쪽이 +)예요. 판을 눌러 점을 찍어요.';
     opts.hidden=true; opts.innerHTML='';
     if(pt.wrong){
-      const w=pt.wrong, cx=px(w.x), cy=py(w.y), d=8;
+      const w=pt.wrong, cx=px(w.x), cy=py(w.y), d=6;
       pts+='<path class="guide bad" d="M'+f1(cx-d)+' '+f1(cy-d)+'L'+f1(cx+d)+' '+f1(cy+d)+'M'+f1(cx+d)+' '+f1(cy-d)+'L'+f1(cx-d)+' '+f1(cy+d)+'"/>';
       labels.push({x:w.x,y:w.y,text:ptStr(w.x,w.y),cls:'bad'});
     }
     if(pt.answered){
       guide=guideTo(q.x,q.y);
-      pts+='<circle class="ptq" cx="'+f1(px(q.x))+'" cy="'+f1(py(q.y))+'" r="7.5"/>';
+      pts+='<circle class="ptq" cx="'+f1(px(q.x))+'" cy="'+f1(py(q.y))+'" r="6"/>';
       labels.push({x:q.x,y:q.y,text:ptStr(q.x,q.y)});
     }
     if(pt.answered){
@@ -972,7 +1016,7 @@ function renderPtQuiz(){
       if(pt.answered){ if(i===q.correct) cls+=' good'; else if(i===pt.picked) cls+=' bad'; }
       return '<button type="button" class="'+cls+'" data-i="'+i+'"'+(pt.answered?' disabled':'')+'>'+ptStr(o[0],o[1])+'</button>';
     }).join('');
-    pts+='<circle class="ptq" cx="'+f1(px(q.x))+'" cy="'+f1(py(q.y))+'" r="7.5"/>';
+    pts+='<circle class="ptq" cx="'+f1(px(q.x))+'" cy="'+f1(py(q.y))+'" r="6"/>';
     if(pt.answered){
       guide=guideTo(q.x,q.y);
       labels.push({x:q.x,y:q.y,text:ptStr(q.x,q.y)});
@@ -994,9 +1038,9 @@ function ptTap(x,y){
 }
 
 /* ---------- 모드 2: 점 → 함수식 ---------- */
-function mkSlot(arr){return {pts:arr.map(p=>({x:p[0],y:p[1]})),visible:true,a:{kind:'none'}};}
+function mkSlot(arr,on){return {pts:arr.map(p=>({x:p[0],y:p[1]})),visible:true,on:!!on,a:{kind:'none'}};}
 const EXS={line:[[0,1],[2,3]],parab:[[-2,3],[0,-1],[2,3]],cubic:[[-2,-2],[-1,2],[1,-2],[2,2]]};
-const ex={fns:[mkSlot(EXS.line),mkSlot(EXS.parab),mkSlot([[0,1],[2,-1]])],active:0,example:true};
+const ex={fns:[mkSlot(EXS.line,true),mkSlot([],false),mkSlot([],false)],active:0,example:true};
 const NAMES=['상수함수','1차 함수','2차 함수','3차 함수'];
 
 function factText(a){
@@ -1008,28 +1052,25 @@ function factText(a){
 }
 function exSlotHTML(i){
   const s=ex.fns[i], a=s.a, act=i===ex.active;
-  let formula, meta;
-  if(a.kind==='none'){formula='<span class="empty">비어 있어요</span>';meta='판을 눌러 점을 찍어요';}
-  else if(a.kind==='one'){formula='<span class="empty">점이 1개예요</span>';meta='하나 더 찍으면 직선이 돼요';}
-  else if(a.kind==='vertical'){formula='<span class="warn">함수가 아니에요</span>';meta='x가 같은 점이 있어요. 점 하나를 옮겨 보세요';}
-  else {formula=polyHTML(a.co);meta=NAMES[a.deg]+' · '+factText(a);}
-  const chips=s.pts.map((p,k)=>'<span class="chip">'+ptStr(p.x,p.y)+'<button type="button" data-f="'+i+'" data-k="'+k+'" aria-label="함수 '+(i+1)+'의 점 '+ptStr(p.x,p.y)+' 지우기">×</button></span>').join('');
+  let formula, tag='';
+  if(a.kind==='none') formula='<span class="empty">판을 눌러 점을 찍어요</span>';
+  else if(a.kind==='one') formula='<span class="empty">점 1개 · 하나 더 찍어요</span>';
+  else if(a.kind==='vertical') formula='<span class="warn">함수가 아니에요 (x가 같은 점)</span>';
+  else {formula=polyHTML(a.co);tag=NAMES[a.deg];}
   return '<li class="slot k'+i+(act?' active':'')+(s.visible?'':' off')+'" data-i="'+i+'">'+
     '<label class="sel"><input type="radio" name="exAct" value="'+i+'"'+(act?' checked':'')+' aria-label="함수 '+(i+1)+' 고르기"></label>'+
     icon(i)+
-    '<div class="slot-main"><div class="formula">'+formula+'</div><div class="meta">'+meta+(act?' · 점 찍는 중':'')+'</div></div>'+
-    '<div class="slot-r2"><div class="chips">'+chips+'</div><div class="acts">'+
-      '<button type="button" class="mini" data-act="hide" data-i="'+i+'">'+(s.visible?'숨기기':'보이기')+'</button>'+
-      '<button type="button" class="mini" data-act="clear" data-i="'+i+'">지우기</button></div></div></li>';
+    '<div class="slot-main"><div class="formula">'+formula+(tag?'<span class="deg">'+tag+'</span>':'')+'</div></div>'+
+    '<div class="acts">'+
+      '<button type="button" class="mini" data-act="hide" data-i="'+i+'">'+(s.visible?'숨김':'보임')+'</button>'+
+      '<button type="button" class="mini" data-act="'+(i===0?'clear':'del')+'" data-i="'+i+'">'+(i===0?'지우기':'삭제')+'</button></div></li>';
 }
 function syncHits(){
   const items=[];
-  for(let i=2;i>=0;i--){
-    const s=ex.fns[i]; if(!s.visible) continue;
-    s.pts.forEach((p,k)=>items.push({f:i,k:k,x:p.x,y:p.y}));
-  }
+  { const i=ex.active, s=ex.fns[i];
+    if(s&&s.on&&s.visible) s.pts.forEach((p,k)=>items.push({f:i,k:k,x:p.x,y:p.y})); }
   if(gHit.childNodes.length!==items.length){
-    gHit.innerHTML=items.map(it=>'<circle class="hit" r="18" data-f="'+it.f+'" data-k="'+it.k+'" cx="'+f1(px(it.x))+'" cy="'+f1(py(it.y))+'"/>').join('');
+    gHit.innerHTML=items.map(it=>'<circle class="hit" r="16" data-f="'+it.f+'" data-k="'+it.k+'" cx="'+f1(px(it.x))+'" cy="'+f1(py(it.y))+'"/>').join('');
   } else {
     items.forEach((it,n)=>{
       const c=gHit.childNodes[n];
@@ -1040,28 +1081,34 @@ function syncHits(){
 }
 function renderExplore(){
   ex.fns.forEach(s=>{s.a=analyze(s.pts);});
-  const fs=ex.fns.map(s=>(s.visible&&s.a.kind==='poly')?(x=>hornerN(s.a.cn,x)):null);
+  const fs=ex.fns.map(s=>(s.on&&s.visible&&s.a.kind==='poly')?(x=>hornerN(s.a.cn,x)):null);
   let curves='', guide='', marks='';
   fs.forEach((f,i)=>{if(f) curves+='<path class="curve st'+i+'" d="'+curvePath(f)+'"/>';});
   ex.fns.forEach(s=>{
-    if(s.visible&&s.a.kind==='vertical') s.a.dups.forEach(x=>{guide+='<line class="vline" x1="'+f1(px(x))+'" y1="5" x2="'+f1(px(x))+'" y2="595"/>';});
+    if(s.on&&s.visible&&s.a.kind==='vertical') s.a.dups.forEach(x=>{guide+='<line class="vline" x1="'+f1(px(x))+'" y1="0" x2="'+f1(px(x))+'" y2="'+H+'"/>';});
   });
   const inter=computeInter(fs);
   let rings='';
   let shown=0;
   const interPts=[];
   inter.list.forEach(it=>{ if(!it.res.same) it.res.pts.forEach(p=>{
-    if(Math.abs(p.x)<=R+0.01&&Math.abs(p.y)<=R+0.5&&shown<12){
+    if(visX(p.x)&&visY(p.y)&&shown<12){
       shown++; interPts.push(p);
-      rings+='<circle class="ring" cx="'+f1(px(p.x))+'" cy="'+f1(py(p.y))+'" r="12"/>';
+      rings+='<circle class="ring" cx="'+f1(px(p.x))+'" cy="'+f1(py(p.y))+'" r="10"/>';
     }
   });});
-  for(let i=2;i>=0;i--){
-    const s=ex.fns[i]; if(!s.visible) continue;
-    s.pts.forEach(p=>{marks+=shape(i,p.x,p.y);});
-  }
+  // 선택한 함수의 점이 맨 위. 같은 자리에 여러 함수의 점이 있으면 아래쪽 점을 조금 더 크게 그려 색이 모두 보이게
+  const order=[0,1,2].filter(i=>i!==ex.active).reverse().concat([ex.active]);
+  order.forEach((i,n)=>{
+    const s=ex.fns[i]; if(!s.on||!s.visible) return;
+    s.pts.forEach(p=>{
+      let above=0;
+      for(let m=n+1;m<order.length;m++){ const t=ex.fns[order[m]]; if(t.on&&t.visible&&t.pts.some(q=>q.x===p.x&&q.y===p.y)) above++; }
+      marks+=shape(i,p.x,p.y,4.5+above*2.3);
+    });
+  });
   const labels=[], seen={};
-  ex.fns.forEach(s=>{ if(!s.visible) return; s.pts.forEach(p=>{
+  ex.fns.forEach(s=>{ if(!s.on||!s.visible) return; s.pts.forEach(p=>{
     const key=p.x+','+p.y; if(!seen[key]){seen[key]=1;labels.push({x:p.x,y:p.y,text:ptStr(p.x,p.y)});}
   });});
   interPts.forEach(p=>{
@@ -1073,83 +1120,90 @@ function renderExplore(){
   syncHits();
   // 오른쪽 쪽
   const hadFocus=document.activeElement&&document.activeElement.name==='exAct';
-  $('exSlots').innerHTML=[0,1,2].map(exSlotHTML).join('');
+  $('exSlots').innerHTML=[0,1,2].filter(i=>ex.fns[i].on).map(exSlotHTML).join('');
   if(hadFocus){const r=document.querySelector('#exSlots input:checked'); if(r) r.focus({preventScroll:true});}
   interBox($('exInter'),inter.list,inter.count);
+  let facts='';
+  ex.fns.forEach((s,i)=>{ if(s.on&&s.a.kind==='poly') facts+='<div class="nrow"><span>'+(i+1)+'번 · '+NAMES[s.a.deg]+'</span><span>'+factText(s.a)+'</span></div>'; });
+  $('exFacts').hidden=!facts; $('exFacts').innerHTML=facts?'<h3>알아두기 · 함수 설명</h3>'+facts:'';
   $('coordBtn').textContent=(ex.active+1)+'번에 찍기';
+  $('ovAdd').disabled=ex.fns.every(s=>s.on);
 }
 function setActive(i){ if(ex.active!==i){ex.active=i;} renderExplore(); updateFoot(); }
 function addPoint(x,y){
   const s=ex.fns[ex.active];
-  if(s.pts.length>=4){say('exMsg','한 함수에 점은 4개까지예요. 점을 끌어서 옮기거나 ×로 지워 보세요.');return false;}
+  if(s.pts.length>=4){say('exMsg','한 함수에 점은 4개까지예요. 내 색 점을 눌러 지우거나 끌어서 옮겨 보세요.');return false;}
   if(s.pts.some(p=>p.x===x&&p.y===y)){say('exMsg','이미 그 자리에 점이 있어요.');return false;}
   s.pts.push({x:x,y:y}); s.visible=true; ex.example=false; render(); return true;
 }
 
 /* ---------- 모드 3: 식 → 그래프 ---------- */
 const fm={fns:[{},{},{}],active:0,x:3};
-fm.fns.forEach(s=>{s.f=null;s.err='';s.visible=true;});
+fm.fns.forEach((s,i)=>{s.f=null;s.err='';s.visible=true;s.on=(i===0);});
 const FM_DEF=[['','','1','1'],['','1','','-1'],['','','-1','1']];
 fm.fns.forEach((s,i)=>{s.v=FM_DEF[i].slice(); s.co=null; s.msg='';});
 function readCo(i){
   const s=fm.fns[i], vals=s.v;      // vals: [x³, x², x, 상수] 칸에 쓴 글자
   s.f=null; s.co=null; s.err='';
-  if(vals.every(v=>String(v).trim()==='')) return;
+  if(vals.every(v=>{const t=String(v).trim();return t===''||t==='-'||t==='−';})) return;
   const co=[];
   for(let k=0;k<4;k++){
-    const t=String(vals[3-k]).trim();
-    const n=t===''?0:Number(t);
+    const t=String(vals[3-k]).trim().replace(/−/g,'-');
+    const n=(t===''||t==='-')?0:Number(t);
     if(!Number.isFinite(n)||!Number.isInteger(n)){ s.err='정수로 써 주세요'; return; }
     if(Math.abs(n)>99){ s.err='−99부터 99까지 써 주세요'; return; }
     co.push(n);
   }
   s.co=co; s.f=x=>hornerN(co,x);
 }
+const SPIN_UP='<svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 7L6 1L11 7Z" fill="currentColor"/></svg>';
+const SPIN_DN='<svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1L6 7L11 1Z" fill="currentColor"/></svg>';
 function buildFmSlots(){
   $('fmSlots').innerHTML=fm.fns.map((s,i)=>{
-    const cell=(k,sup)=>'<input class="cf" id="cf'+i+'_'+k+'" type="number" step="1" inputmode="numeric" data-i="'+i+'" data-k="'+k+'" value="'+esc(s.v[k])+'" aria-label="함수 '+(i+1)+'의 '+(k===3?'상수':(['3차','2차','1차'][k])+' 항 앞의 수')+'">';
+    const nm=k=>'함수 '+(i+1)+'의 '+(k===3?'상수':(['3차','2차','1차'][k])+' 항 앞의 수');
+    const cell=k=>'<span class="cw"><input class="cf" id="cf'+i+'_'+k+'" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" data-i="'+i+'" data-k="'+k+'" value="'+esc(s.v[k])+'" aria-label="'+nm(k)+'">'+
+      '<span class="arr"><button type="button" class="ar" tabindex="-1" data-i="'+i+'" data-k="'+k+'" data-d="1" aria-label="'+nm(k)+' 1 늘리기">'+SPIN_UP+'</button>'+
+      '<button type="button" class="ar" tabindex="-1" data-i="'+i+'" data-k="'+k+'" data-d="-1" aria-label="'+nm(k)+' 1 줄이기">'+SPIN_DN+'</button></span></span>';
     return '<li class="slot fslot k'+i+'" data-i="'+i+'">'+icon(i)+
     '<div class="slot-main"><div class="fx-in"><span class="eq">y =</span>'+
       cell(0)+'<span class="tx">x<sup>3</sup> +</span>'+cell(1)+'<span class="tx">x<sup>2</sup> +</span>'+cell(2)+'<span class="tx">x +</span>'+cell(3)+
-    '</div><div class="meta" id="fxm'+i+'"></div></div>'+
-    '<div class="acts"><button type="button" class="mini" data-act="hide" data-i="'+i+'">숨기기</button>'+
-    '<button type="button" class="mini" data-act="clear" data-i="'+i+'">지우기</button></div></li>';
+    '</div></div>'+
+    '<div class="acts"><span class="deg" id="fxm'+i+'"></span><button type="button" class="mini" data-act="hide" data-i="'+i+'">숨김</button>'+
+    '<button type="button" class="mini" data-act="'+(i===0?'clear':'del')+'" data-i="'+i+'">'+(i===0?'지우기':'삭제')+'</button></div></li>';
   }).join('');
 }
 function updateFmSlotsUI(){
   fm.fns.forEach((s,i)=>{
     const li=$('fmSlots').children[i]; if(!li) return;
+    li.hidden=!s.on;
     li.classList.toggle('off',!s.visible);
-    li.querySelector('[data-act="hide"]').textContent=s.visible?'숨기기':'보이기';
+    li.querySelector('[data-act="hide"]').textContent=s.visible?'숨김':'보임';
     li.querySelectorAll('.cf').forEach(inp=>inp.classList.toggle('bad',!!s.err));
     let m='';
-    if(s.err) m=s.err;
-    else if(!s.co) m='빈칸에 숫자를 써 보세요';
-    else {
-      let d=s.co.length-1; while(d>0&&s.co[d]===0) d--;
-      m=NAMES[d]+' · '+intPoly(s.co.slice(0,d+1));
-    }
+    if(s.err) m='<span style="color:var(--bad)">'+s.err+'</span>';
+    else if(s.co){ let d=s.co.length-1; while(d>0&&s.co[d]===0) d--; m=NAMES[d]; }
     $('fxm'+i).innerHTML=m;
   });
+  $('ovAdd').disabled=fm.fns.every(s=>s.on);
 }
 function syncFmSlider(){
-  const el=$('fmX'); el.min=-R; el.max=R;
-  fm.x=clamp(fm.x,-R,R); el.value=fm.x;
+  const el=$('fmX'); el.min=-MX; el.max=MX;
+  fm.x=clamp(fm.x,-MX,MX); el.value=fm.x;
 }
 function renderFormula(){
   updateFmSlotsUI();
-  const fs=fm.fns.map(s=>(s.visible&&s.f)?s.f:null);
+  const fs=fm.fns.map(s=>(s.on&&s.visible&&s.f)?s.f:null);
   let curves='';
   fs.forEach((f,i)=>{if(f) curves+='<path class="curve st'+i+'" d="'+curvePath(f)+'"/>';});
   const x=fm.x;
-  let guide='<line class="guide" x1="'+f1(px(x))+'" y1="5" x2="'+f1(px(x))+'" y2="595"/>'+
-    '<text class="tag" x="'+f1(px(x))+'" y="'+(CY+44)+'" text-anchor="middle">x = '+fmt(x)+'</text>';
+  let guide='<line class="guide" x1="'+f1(px(x))+'" y1="0" x2="'+f1(px(x))+'" y2="'+H+'"/>'+
+    '<text class="tag" x="'+f1(px(x))+'" y="'+(CY+34)+'" text-anchor="middle">x = '+fmt(x)+'</text>';
   const inter=computeInter(fs);
   let rings='', shown=0; const interPts=[];
   inter.list.forEach(it=>{ if(!it.res.same) it.res.pts.forEach(p=>{
-    if(Math.abs(p.x)<=R+0.01&&Math.abs(p.y)<=R+0.5&&shown<12){
+    if(visX(p.x)&&visY(p.y)&&shown<12){
       shown++; interPts.push(p);
-      rings+='<circle class="ring" cx="'+f1(px(p.x))+'" cy="'+f1(py(p.y))+'" r="12"/>';
+      rings+='<circle class="ring" cx="'+f1(px(p.x))+'" cy="'+f1(py(p.y))+'" r="10"/>';
     }
   });});
   let marks='', vals='';
@@ -1157,7 +1211,7 @@ function renderFormula(){
   for(let i=2;i>=0;i--){
     const f=fs[i]; if(!f) continue;
     const y=f(x);
-    if(isFinite(y)&&Math.abs(y)<=R+0.5){
+    if(isFinite(y)&&visY(y)){
       marks+=shape(i,x,y);
     }
   }
@@ -1166,7 +1220,7 @@ function renderFormula(){
     const y=f(x);
     let txt;
     if(!isFinite(y)) txt='<span>값이 없어요</span>';
-    else if(Math.abs(y)>R+0.5) txt='y = '+fmtNum(y)+' <span class="vnote">그래프 밖이에요</span>';
+    else if(!visY(y)) txt='y = '+fmtNum(y)+' <span class="vnote">그래프 밖이에요</span>';
     else {
       txt='y = '+fmtNum(y);
       const key=fmt(x)+','+fmtNum(y);
@@ -1182,6 +1236,9 @@ function renderFormula(){
   gPts.innerHTML=rings+marks+placeLabels(labels.slice(0,14));
   $('fmVals').innerHTML=vals||'<li><span class="vnote">그릴 식이 없어요</span></li>';
   $('xNow').textContent='x = '+fmt(fm.x);
+  let simp='';
+  fm.fns.forEach((s,i)=>{ if(s.on&&s.co){ let d=s.co.length-1; while(d>0&&s.co[d]===0) d--; simp+='<div class="nrow"><span>'+(i+1)+'번 · '+NAMES[d]+'</span><span class="formula k'+i+'">'+intPoly(s.co.slice(0,d+1))+'</span></div>'; } });
+  $('fmSimple').hidden=!simp; $('fmSimple').innerHTML=simp?'<h3>알아두기 · 식을 정리하면</h3>'+simp:'';
 }
 
 /* ---------- 모드 3: 퀴즈 ---------- */
@@ -1316,26 +1373,26 @@ function renderQuiz(){
   let guide='', pp='';
   const labels=[];
   if(q.type==='value'||q.type==='read'){
-    guide+='<line class="guide" x1="'+f1(px(q.x0))+'" y1="5" x2="'+f1(px(q.x0))+'" y2="595"/>';
-    guide+='<text class="tag" x="'+f1(px(q.x0))+'" y="'+(CY+44)+'" text-anchor="middle">x = '+fmt(q.x0)+'</text>';
+    guide+='<line class="guide" x1="'+f1(px(q.x0))+'" y1="0" x2="'+f1(px(q.x0))+'" y2="'+H+'"/>';
+    guide+='<text class="tag" x="'+f1(px(q.x0))+'" y="'+(CY+34)+'" text-anchor="middle">x = '+fmt(q.x0)+'</text>';
   } else if(q.type==='inverse'){
-    guide+='<line class="guide" x1="5" y1="'+f1(py(q.y0))+'" x2="795" y2="'+f1(py(q.y0))+'"/>';
-    guide+='<text class="tag" x="'+(CX+14)+'" y="'+f1(py(q.y0)-10)+'">y = '+fmt(q.y0)+'</text>';
+    guide+='<line class="guide" x1="0" y1="'+f1(py(q.y0))+'" x2="'+W+'" y2="'+f1(py(q.y0))+'"/>';
+    guide+='<text class="tag" x="'+(CX+12)+'" y="'+f1(py(q.y0)-8)+'">y = '+fmt(q.y0)+'</text>';
   }
   if(q.type==='pick'){
     q.marks.forEach(m=>{pp+=shape(0,m.x,m.y);labels.push({x:m.x,y:m.y,text:ptStr(m.x,m.y)});});
   } else if(quiz.answered){
-    pp+='<circle class="qgood" cx="'+f1(px(q.x0))+'" cy="'+f1(py(q.y0))+'" r="4"/>';
+    pp+='<circle class="qgood" cx="'+f1(px(q.x0))+'" cy="'+f1(py(q.y0))+'" r="3.5"/>';
     labels.push({x:q.x0,y:q.y0,text:ptStr(q.x0,q.y0)});
     if(!quiz.ok && quiz.userVal!==null){
       const ux=q.type==='inverse'?quiz.userVal:q.x0, uy=q.type==='inverse'?q.y0:quiz.userVal;
-      if(Math.abs(ux)<=R+0.5 && Math.abs(uy)<=R+0.5){
-        pp+='<circle class="qring bad" cx="'+f1(px(ux))+'" cy="'+f1(py(uy))+'" r="4.5"/>';
+      if(visX(ux) && visY(uy)){
+        pp+='<circle class="qring bad" cx="'+f1(px(ux))+'" cy="'+f1(py(uy))+'" r="4"/>';
         labels.push({x:ux,y:uy,text:'내 답',cls:'bad'});
       }
     }
   } else if(showCurve){
-    pp+='<circle class="qring" cx="'+f1(px(q.x0))+'" cy="'+f1(py(q.y0))+'" r="4.5"/>';
+    pp+='<circle class="qring" cx="'+f1(px(q.x0))+'" cy="'+f1(py(q.y0))+'" r="4"/>';
     labels.push({x:q.x0,y:q.y0,text:'?'});
   }
   gCurve.innerHTML=curve; gGuide.innerHTML=guide; gPts.innerHTML=pp+placeLabels(labels); gGhost.innerHTML='';
@@ -1344,22 +1401,16 @@ function renderQuiz(){
 /* ---------- 범위 바꾸기 ---------- */
 function setRange(r){
   if(r===R) return;
-  if(mode==='explore' && ex.fns.some(s=>s.pts.some(p=>Math.abs(p.x)>r||Math.abs(p.y)>r))){
-    say('exMsg','범위 밖에 점이 있어서 줄일 수 없어요. 점을 안쪽으로 옮겨 주세요.'); return;
-  }
-  if(mode==='points' && pt.pts.some(p=>Math.abs(p.x)>r||Math.abs(p.y)>r)){
-    say('ptMsg','범위 밖에 점이 있어서 줄일 수 없어요. 그 점을 지워 주세요.'); return;
-  }
-  R=r; UX=380/R; UY=280/R;
+  R=r;
   document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.r)===R)));
-  drawStatic(); syncFmSlider(); render();
+  layout(); drawStatic(); syncFmSlider(); render();
 }
 
 /* ---------- 그래프판 입력 ---------- */
 function lattice(e){
   const r=svg.getBoundingClientRect();
-  const sx=(e.clientX-r.left)*800/r.width, sy=(e.clientY-r.top)*600/r.height;
-  return {x:clamp(Math.round((sx-CX)/UX),-R,R), y:clamp(Math.round((CY-sy)/UY),-R,R)};
+  const sx=(e.clientX-r.left)*W/r.width, sy=(e.clientY-r.top)*H/r.height;
+  return {x:clamp(Math.round((sx-CX)/U),-MX,MX), y:clamp(Math.round((CY-sy)/U),-MY,MY)};
 }
 let cand=null, drag=null, tap=null;
 svg.addEventListener('pointerdown',e=>{
@@ -1387,7 +1438,7 @@ svg.addEventListener('pointermove',e=>{
   $('cursor').textContent='커서 '+ptStr(l.x,l.y);
   if((mode==='explore'||mode==='points') && e.pointerType==='mouse' && !cand){
     if(e.target.classList && e.target.classList.contains('hit')){gGhost.innerHTML='';return;}
-    gGhost.innerHTML='<circle class="ghost-mk" cx="'+f1(px(l.x))+'" cy="'+f1(py(l.y))+'" r="7"/>';
+    gGhost.innerHTML='<circle class="ghost-mk'+(mode==='explore'?' fl'+ex.active:'')+'" cx="'+f1(px(l.x))+'" cy="'+f1(py(l.y))+'" r="5"/>';
   }
 });
 svg.addEventListener('pointerup',e=>{
@@ -1422,8 +1473,8 @@ document.querySelectorAll('[data-plv]').forEach(b=>b.addEventListener('click',()
 $('ptForm').addEventListener('submit',e=>{
   e.preventDefault();
   const xs=$('ptX').value.trim(), ys=$('ptY').value.trim(), x=Number(xs), y=Number(ys);
-  if(xs===''||ys===''||!Number.isInteger(x)||!Number.isInteger(y)||Math.abs(x)>R||Math.abs(y)>R){
-    say('ptMsg','x와 y에 −'+R+'부터 '+R+'까지의 정수를 써 주세요.'); return;
+  if(xs===''||ys===''||!Number.isInteger(x)||!Number.isInteger(y)||Math.abs(x)>MX||Math.abs(y)>MY){
+    say('ptMsg','x는 −'+MX+'~'+MX+', y는 −'+MY+'~'+MY+' 사이의 정수를 써 주세요.'); return;
   }
   if(pt.pts.some(p=>p.x===x&&p.y===y)){ say('ptMsg','이미 그 자리에 점이 있어요.'); return; }
   if(pt.pts.length>=PT_MAX){ say('ptMsg','점은 '+PT_MAX+'개까지 찍을 수 있어요.'); return; }
@@ -1454,7 +1505,9 @@ $('exSlots').addEventListener('click',e=>{
   const act=e.target.closest('button[data-act]');
   if(act){
     const i=Number(act.dataset.i), s=ex.fns[i];
-    if(act.dataset.act==='hide') s.visible=!s.visible; else {s.pts=[];s.visible=true;}
+    if(act.dataset.act==='hide') s.visible=!s.visible;
+    else if(act.dataset.act==='del'){ s.pts=[]; s.visible=true; s.on=false; if(ex.active===i) ex.active=0; }
+    else {s.pts=[];s.visible=true;}
     ex.example=false; render();
   }
 });
@@ -1462,14 +1515,14 @@ $('coordForm').addEventListener('submit',e=>{
   e.preventDefault();
   const xs=$('inX').value.trim(), ys=$('inY').value.trim();
   const x=Number(xs), y=Number(ys);
-  if(xs===''||ys===''||!Number.isInteger(x)||!Number.isInteger(y)||Math.abs(x)>R||Math.abs(y)>R){
-    say('exMsg','x와 y에 −'+R+'부터 '+R+'까지의 정수를 써 주세요.'); return;
+  if(xs===''||ys===''||!Number.isInteger(x)||!Number.isInteger(y)||Math.abs(x)>MX||Math.abs(y)>MY){
+    say('exMsg','x는 −'+MX+'~'+MX+', y는 −'+MY+'~'+MY+' 사이의 정수를 써 주세요.'); return;
   }
   if(addPoint(x,y)){ $('inX').value=''; $('inY').value=''; $('inX').focus(); }
 });
 document.querySelectorAll('[data-ex]').forEach(b=>b.addEventListener('click',()=>{
   const arr=EXS[b.dataset.ex];
-  if(arr.some(p=>Math.abs(p[0])>R||Math.abs(p[1])>R)){say('exMsg','범위를 넓히면 불러올 수 있어요.');return;}
+  if(arr.some(p=>Math.abs(p[0])>MX||Math.abs(p[1])>MY)){say('exMsg','범위를 넓히면 불러올 수 있어요.');return;}
   ex.fns[ex.active]=mkSlot(arr); render();
 }));
 $('clearAll').addEventListener('click',()=>{ex.fns.forEach(s=>{s.pts=[];s.visible=true;});ex.example=false;render();});
@@ -1477,16 +1530,47 @@ $('clearAll').addEventListener('click',()=>{ex.fns.forEach(s=>{s.pts=[];s.visibl
 // 식 → 그래프
 buildFmSlots();
 fm.fns.forEach((s,i)=>readCo(i));
+function fmStep(i,k,d){
+  const s=fm.fns[i];
+  const t=String(s.v[k]).trim().replace(/−/g,'-');
+  let n=Number(t); if(!Number.isFinite(n)||t==='-'||t==='') n=0; n=Math.round(n);
+  n=clamp(n+d,-99,99);
+  s.v[k]=String(n); $('cf'+i+'_'+k).value=String(n); s.visible=true;
+  readCo(i); renderFormula(); updateFoot();
+}
 $('fmSlots').addEventListener('input',e=>{
   const t=e.target; if(!t.classList.contains('cf')) return;
-  const i=Number(t.dataset.i); fm.fns[i].v[Number(t.dataset.k)]=t.value; fm.fns[i].visible=true;
+  let v=t.value.replace(/−/g,'-').replace(/[^0-9-]/g,'');
+  v=v.replace(/(?!^)-/g,'');
+  if(v!==t.value) t.value=v;
+  const i=Number(t.dataset.i); fm.fns[i].v[Number(t.dataset.k)]=v; fm.fns[i].visible=true;
   readCo(i); renderFormula(); updateFoot();
 });
+$('fmSlots').addEventListener('keydown',e=>{
+  const t=e.target; if(!t.classList||!t.classList.contains('cf')) return;
+  if(e.key==='ArrowUp'||e.key==='ArrowDown'){ e.preventDefault(); fmStep(Number(t.dataset.i),Number(t.dataset.k),e.key==='ArrowUp'?1:-1); }
+});
+// ▲▼ 버튼: 한 번 누르면 1씩, 꾹 누르면 계속
+let holdT=null, holdI=null;
+function stopHold(){ clearTimeout(holdT); clearInterval(holdI); holdT=null; holdI=null; }
+$('fmSlots').addEventListener('pointerdown',e=>{
+  const b=e.target.closest('.ar'); if(!b) return;
+  e.preventDefault();
+  const i=Number(b.dataset.i), k=Number(b.dataset.k), d=Number(b.dataset.d);
+  fmStep(i,k,d); stopHold();
+  holdT=setTimeout(()=>{ holdI=setInterval(()=>fmStep(i,k,d),90); },420);
+});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>$('fmSlots').addEventListener(ev,stopHold));
+window.addEventListener('blur',stopHold);
 $('fmSlots').addEventListener('click',e=>{
   const act=e.target.closest('button[data-act]'); if(!act) return;
   const i=Number(act.dataset.i), s=fm.fns[i];
   if(act.dataset.act==='hide') s.visible=!s.visible;
-  else { s.v=['','','','']; document.querySelectorAll('#fmSlots li:nth-child('+(i+1)+') .cf').forEach(inp=>{inp.value='';}); readCo(i); s.visible=true; }
+  else {
+    s.v=['','','','']; document.querySelectorAll('#fmSlots li:nth-child('+(i+1)+') .cf').forEach(inp=>{inp.value='';});
+    readCo(i); s.visible=true;
+    if(act.dataset.act==='del') s.on=false;
+  }
   render();
 });
 $('fmX').addEventListener('input',()=>{fm.x=Number($('fmX').value);renderFormula();});
@@ -1532,6 +1616,26 @@ document.addEventListener('fullscreenchange',paintFull);
 document.addEventListener('webkitfullscreenchange',paintFull);
 paintFull();
 
+// 겹침 창: 함수 추가, 접기
+$('ovAdd').addEventListener('click',()=>{
+  if(mode==='explore'){
+    const i=ex.fns.findIndex(s=>!s.on); if(i<0) return;
+    ex.fns[i]=mkSlot([],true); ex.active=i; ex.example=false; render();
+  } else if(mode==='formula'){
+    const i=fm.fns.findIndex(s=>!s.on); if(i<0) return;
+    const s=fm.fns[i]; s.on=true; s.visible=true; s.v=['','','','']; s.f=null; s.co=null; s.err='';
+    document.querySelectorAll('#fmSlots li:nth-child('+(i+1)+') .cf').forEach(inp=>{inp.value='';});
+    render();
+    const first=$('cf'+i+'_2'); if(first) first.focus({preventScroll:true});
+  }
+});
+$('ovTog').addEventListener('click',()=>{
+  const c=$('ov').classList.toggle('collapsed');
+  $('ovTog').textContent=c?'펼치기':'접기';
+  $('ovTog').setAttribute('aria-expanded',String(!c));
+  $('ovTog').setAttribute('aria-label',c?'목록 펼치기':'목록 접기');
+});
+
 // 글자 크기, 야간 모드
 const app=$('app');
 function isNight(){
@@ -1567,11 +1671,22 @@ try{
 paintThemeBtn();
 
 /* ---------- 시작 ---------- */
+layout();
 drawStatic();
 newQuestion();
 showQuestion(false);
 setMode('points');
+let rzT=0;
+if(window.ResizeObserver){
+  new ResizeObserver(()=>{
+    cancelAnimationFrame(rzT);
+    rzT=requestAnimationFrame(()=>{
+      const r=svg.getBoundingClientRect();
+      if(Math.round(r.width)===W&&Math.round(r.height)===H) return;
+      layout(); drawStatic(); syncFmSlider(); render();
+    });
+  }).observe(frame);
+}
 })();
 </script>
-</body>
-</html>
+</body></html>
